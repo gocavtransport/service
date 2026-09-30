@@ -600,8 +600,39 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         <div><div style="font-weight:700;color:#60a5fa;font-size:15px">BDO</div><div class="acct-name">Tuhamie A. Dimanang</div><div class="acct">0048 2022 1372</div></div>
         <button type="button" class="copy-btn" data-copy="BDO — Tuhamie A. Dimanang — 004820221372">Copy</button>
       </div>
-      <p style="font-size:12px;color:var(--muted);margin:12px 0 0">Corporate accounts: select "Corporate Billing (Invoice)" for weekly/monthly invoicing. Please send proof of payment via WhatsApp or Viber after transfer.</p>
+      <p style="font-size:12px;color:var(--muted);margin:12px 0 0">Corporate accounts: BPI / BDO preferred. Select "Corporate Billing (Invoice)" for weekly invoicing. Send proof via WhatsApp or Viber after transfer.</p>
     </div>
+  </div>
+  <div class="reveal card-el p-6 mt-5" style="border-color:rgba(212,175,55,.35);background:linear-gradient(160deg,rgba(212,175,55,.08),var(--card))">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div class="feature-icon" style="width:40px;height:40px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      </div>
+      <div>
+        <div class="step-label" style="margin:0">Corporate accounts</div>
+        <h3 style="font-weight:700;margin:2px 0 0;font-size:18px">Payment terms by service</h3>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 14px">BPI / BDO preferred · GCash / Maya for small or urgent trips · Toll &amp; parking added at actual cost</p>
+    <div class="grid md:grid-cols-2 gap-3" style="font-size:14px">
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+        <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">One-way &amp; same-day return</div>
+        <div style="color:var(--text);line-height:1.55">Settle within <strong>3 days</strong> after the trip. 8% off when you return the same day.</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+        <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">Multi-day round trip</div>
+        <div style="color:var(--text);line-height:1.55"><strong>50%</strong> to confirm the booking · balance after the return pickup.</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+        <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">Full-day / site visit</div>
+        <div style="color:var(--text);line-height:1.55">Invoiced after the visit · due <strong>Net 7</strong> · 2-way toll &amp; parking at actual.</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+        <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">Multi-day site visit (2–7 days)</div>
+        <div style="color:var(--text);line-height:1.55">One invoice for the block · due <strong>Net 7</strong>. New accounts: Day-1 rate or 50% before start.</div>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin:14px 0 0">Send proof of payment via WhatsApp or Viber. Approved repeat accounts may move to weekly invoicing.</p>
   </div>
 </section>
 <section class="py-16" style="background:linear-gradient(180deg,transparent,rgba(212,175,55,.04),transparent)">
@@ -922,6 +953,24 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   }
   var fareTimer=null;
   function scheduleFare(){ clearTimeout(fareTimer); fareTimer=setTimeout(computeFare, 400); }
+  function getPayTerms(svcType, corporate){
+    if(!corporate){
+      return 'Standard: Cash / GCash / Maya / bank transfer. Toll & parking at actual cost.';
+    }
+    if(svcType==='DAYRENTAL_MULTI'){
+      return 'Corporate multi-day site visit: one invoice for the block, Net 7 (BPI/BDO). New accounts: Day-1 rate or 50% before start. Toll & parking at actual.';
+    }
+    if(svcType==='DAYRENTAL'){
+      return 'Corporate full-day / site visit: invoiced after the visit, Net 7 (BPI/BDO). Toll & parking at actual.';
+    }
+    if(svcType==='TRANSFER_ROUND_MULTIDAY'){
+      return 'Corporate multi-day round trip: 50% to confirm, balance after return pickup (BPI/BDO). Toll & parking at actual.';
+    }
+    if(svcType==='TRANSFER_ROUND_SAMEDAY'){
+      return 'Corporate same-day return: settle within 3 days (BPI/BDO preferred). 8% off when you return the same day. Toll & parking at actual.';
+    }
+    return 'Corporate transfer: settle within 3 days (BPI/BDO preferred). Toll & parking at actual.';
+  }
   function generatePDF(){
     try {
       var b = state.lastBooking; if(!b) return;
@@ -1005,6 +1054,11 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           y+=28;
           doc.setTextColor(90,90,90); doc.setFont('helvetica','normal'); doc.setFontSize(9);
           doc.text('Payment: '+b.payment, 40, y); y+=14;
+          if(b.payTerms){
+            var termsLines = doc.splitTextToSize('Terms: '+b.payTerms, W-80);
+            doc.text(termsLines, 40, y);
+            y += termsLines.length * 12 + 4;
+          }
           doc.text('Account Name: Tuhamie A. Dimanang · GCash/Maya: 0995-435-5514 · BPI: 0489-7200-78 · BDO: 0048 2022 1372', 40, y); y+=18;
           doc.setFontSize(8);
           if(b.dayRentalMulti){
@@ -1397,6 +1451,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       'From: '+$('f_pickup').value.trim()+'\n' +
       'To: '+$('f_dropoff').value.trim()+'\n' +
       'Payment: '+$('f_payment').value+'\n' +
+      'Terms: '+getPayTerms(svcType, state.corporate)+'\n' +
       'Notes: '+($('f_notes').value.trim()||'None')+'\n' +
       'Sent via: '+state.sendMethod+'\n' +
       '══════════════════════\n' +
@@ -1414,6 +1469,8 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       from: $('f_pickup').value.trim(), to: $('f_dropoff').value.trim(), flight: flight,
       pax: $('f_pax').value, bags: $('f_luggage').value||'0',
       payment: $('f_payment').value, rateText: rateText,
+      payTerms: getPayTerms(svcType, state.corporate),
+      svcType: svcType,
       dayRental: !!(state.lastFare && state.lastFare.dayRental),
       dayRentalMulti: !!(state.lastFare && state.lastFare.dayRentalMulti),
       days: (state.lastFare && state.lastFare.days) ? state.lastFare.days : null,
