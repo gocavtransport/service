@@ -82,7 +82,10 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 .partner-flash strong{color:var(--gold-light)}
 .city-slot{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card2)}
 .city-slot.open{border-color:rgba(52,211,153,.35)}
-.city-slot.full{border-color:var(--border);opacity:.65}
+.city-slot.full{border-color:rgba(239,68,68,.75);background:linear-gradient(135deg,rgba(239,68,68,.16),rgba(239,68,68,.04));box-shadow:0 0 8px rgba(239,68,68,.35),0 0 18px rgba(239,68,68,.18);animation:cityFullGlow 1.8s ease-in-out infinite}
+.city-slot.full .city-name{color:#fca5a5}
+.city-slot.full .city-meta{color:#f87171}
+@keyframes cityFullGlow{0%,100%{box-shadow:0 0 6px rgba(239,68,68,.3),0 0 14px rgba(239,68,68,.12)}50%{box-shadow:0 0 14px rgba(239,68,68,.7),0 0 28px rgba(239,68,68,.28)}}
 .city-slot .city-name{font-weight:700;font-size:14px}
 .city-slot .city-meta{font-size:12px;color:var(--muted);margin-top:4px}
 
@@ -1713,17 +1716,48 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   });
 
   var PARTNER_CITIES = [
-    { name:'Manila', filled:0 }, { name:'Makati', filled:0 }, { name:'Taguig / BGC', filled:0 },
-    { name:'Pasay / NAIA', filled:0 }, { name:'Parañaque', filled:0 }, { name:'Las Piñas', filled:2 },
-    { name:'Muntinlupa', filled:1 }, { name:'Pasig', filled:0 }, { name:'Mandaluyong', filled:0 },
-    { name:'San Juan', filled:0 }, { name:'Quezon City', filled:0 }, { name:'Marikina', filled:0 },
-    { name:'Caloocan', filled:0 }, { name:'Valenzuela', filled:0 }, { name:'Malabon', filled:0 },
-    { name:'Navotas', filled:0 }, { name:'Pateros', filled:0 },
-    { name:'General Trias', filled:2 }, { name:'Dasmariñas', filled:2 }, { name:'Imus', filled:2 },
-    { name:'Bacoor', filled:2 }, { name:'Carmona', filled:2 }, { name:'Tanza', filled:2 },
-    { name:'Santa Rosa', filled:0 }, { name:'Biñan', filled:0 }, { name:'San Pedro', filled:0 },
-    { name:'Cabuyao', filled:0 }, { name:'Calamba', filled:0 }
+    { name:'Manila', match:['manila'] },
+    { name:'Makati', match:['makati'] },
+    { name:'Taguig / BGC', match:['taguig','bgc'] },
+    { name:'Pasay / NAIA', match:['pasay','naia'] },
+    { name:'Parañaque', match:['paranaque','parañaque'] },
+    { name:'Las Piñas', match:['las pinas','las piñas'] },
+    { name:'Muntinlupa', match:['muntinlupa'] },
+    { name:'Alabang', match:['alabang'] },
+    { name:'Pasig', match:['pasig'] },
+    { name:'Mandaluyong', match:['mandaluyong'] },
+    { name:'San Juan', match:['san juan'] },
+    { name:'Quezon City', match:['quezon'] },
+    { name:'Marikina', match:['marikina'] },
+    { name:'Caloocan', match:['caloocan'] },
+    { name:'Valenzuela', match:['valenzuela'] },
+    { name:'Malabon', match:['malabon'] },
+    { name:'Navotas', match:['navotas'] },
+    { name:'Pateros', match:['pateros'] },
+    { name:'General Trias', match:['general trias','gentri'] },
+    { name:'Dasmariñas', match:['dasmari'] },
+    { name:'Imus', match:['imus'] },
+    { name:'Bacoor', match:['bacoor'] },
+    { name:'Kawit', match:['kawit'] },
+    { name:'Tanza', match:['tanza'] },
+    { name:'Trece Martires', match:['trece','trace'] },
+    { name:'Carmona', match:['carmona'] },
+    { name:'GMA', match:['gma'] },
+    { name:'Santa Rosa', match:['santa rosa'] },
+    { name:'Biñan', match:['biñan','binan'] },
+    { name:'San Pedro', match:['san pedro'] },
+    { name:'Cabuyao', match:['cabuyao'] },
+    { name:'Calamba', match:['calamba'] }
   ];
+  function partnerCountForCity(city){
+    var ms = city.match || [];
+    var n = 0;
+    PARTNER_UNITS.forEach(function(u){
+      var hit = ms.some(function(m){ return (u.keys||[]).indexOf(m)!==-1; });
+      if(hit) n++;
+    });
+    return n;
+  }
 
   var PARTNER_UNITS = [
     { id:'tom-accent', driver:'Tom', phone:'0995-435-55114', plate:'NGF 5260', unit:'Hyundai Accent', cls:'accent', base:'General Trias', keys:['general trias','gentri','le rica','imus','dasmari','kawit','bacoor','paranaque','parañaque','las pinas','las piñas','trece','trace','alabang','muntinlupa'] },
@@ -1801,11 +1835,12 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     grid.innerHTML = '';
     sel.innerHTML = '<option value="">— Select open city —</option>';
     PARTNER_CITIES.forEach(function(c){
-      var open = (c.filled||0) < PARTNER_SLOTS;
-      var left = Math.max(0, PARTNER_SLOTS - (c.filled||0));
+      var filled = partnerCountForCity(c);
+      var open = filled < PARTNER_SLOTS;
+      var left = Math.max(0, PARTNER_SLOTS - filled);
       var card = document.createElement('div');
       card.className = 'city-slot '+(open?'open':'full');
-      card.innerHTML = '<div class="city-name">'+c.name+'</div><div class="city-meta">'+(open ? ('Open — '+left+' of '+PARTNER_SLOTS+' slots') : 'Full — nearby city only')+'</div>';
+      card.innerHTML = '<div class="city-name">'+c.name+'</div><div class="city-meta">'+(open ? ('Open — '+left+' of '+PARTNER_SLOTS+' slots') : 'Full — '+filled+' unit'+(filled===1?'':'s')+' already covering')+'</div>';
       grid.appendChild(card);
       if(open){
         var opt = document.createElement('option');
