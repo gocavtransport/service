@@ -1,4 +1,6 @@
+<!DOCTYPE html>
 <html style="margin:0;padding:0;">
+<head>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -122,8 +124,9 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
   document.head.appendChild(s);
 })();
 </script>
+</head>
+<body>
 <div style="background:radial-gradient(900px 500px at 85% -5%,rgba(212,175,55,.10),transparent 60%),var(--bg);min-height:100%;">
-
 <nav class="sticky-nav">
   <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
     <div class="flex items-center gap-4">
@@ -143,7 +146,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     <button class="gold-btn px-4 py-2.5 rounded-lg text-sm md:hidden" data-scroll="#booking">Book</button>
   </div>
 </nav>
-
 <section style="position:relative;overflow:hidden;padding:80px 24px 60px;text-align:center">
   <div class="hero-glow" style="width:400px;height:400px;background:var(--gold);top:-100px;left:10%"></div>
   <div class="hero-glow" style="width:300px;height:300px;background:var(--teal);bottom:-80px;right:10%;opacity:.3"></div>
@@ -171,19 +173,16 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     </div>
   </div>
 </section>
-
 <section id="services" class="max-w-6xl mx-auto px-5 py-16">
   <div class="reveal text-center mb-10">
     <div class="step-label mb-2">Our Fleet &amp; Rates</div>
     <h2 class="serif" style="font-size:38px;font-weight:700;margin:0 0 8px">Choose Your <span class="gold-text">Ride</span></h2>
     <p style="color:var(--muted);max-width:540px;margin:0 auto;font-size:16px">Accent ₱35/km · Avanza ₱45/km · Montero ₱50/km — fuel included. Live estimate + PDF quotation.</p>
   </div>
-
   <div class="reveal mb-4" style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
     <span style="font-size:13px;color:var(--muted)">Cavite ↔ NAIA — <strong style="color:var(--text)">Fuel Included</strong> · Toll &amp; Parking paid by client · Fixed rates below</span>
   </div>
-
   <div class="grid md:grid-cols-3 gap-5 mb-10" id="airportCards">
     <div class="card-el service-card reveal p-5" data-service="CAVITE_TO_NAIA|Cavite → NAIA Terminal|AIRPORT_ONE_WAY" data-vehicle="accent">
       <img src="https://i.imgur.com/xbQhOQU.jpeg" alt="Hyundai Accent" style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:14px" onerror="this.style.display='none'">
@@ -219,7 +218,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       <div style="margin-top:10px;font-size:12px;color:var(--green)">✓ Fuel Included · Professional Driver</div>
     </div>
   </div>
-
   <div class="reveal mb-4" style="display:flex;align-items:center;gap:10px;margin-bottom:16px;margin-top:24px">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
     <span style="font-size:13px;color:var(--muted)">Laguna &amp; Batangas ↔ NAIA — <strong style="color:var(--text)">Live Fare Estimate</strong> · ₱35–50/km by vehicle · Fuel included</span>
@@ -238,7 +236,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       <div style="color:var(--gold-light);font-weight:700;font-size:15px">₱35/km Accent · ₱45/km Avanza · ₱50/km Montero</div>
     </div>
   </div>
-
   <div class="reveal mb-4" style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
     <span style="font-size:13px;color:var(--muted)">Day Tours — <strong style="color:var(--text)">8–10 hours</strong> · Flat day rates · Fuel &amp; toll/parking charged to client</span>
@@ -258,7 +255,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     </div>
   </div>
 </section>
-
 <section id="why" class="py-16" style="background:linear-gradient(180deg,transparent,rgba(212,175,55,.04),transparent)">
   <div class="max-w-6xl mx-auto px-5">
     <div class="reveal text-center mb-10">
@@ -289,14 +285,12 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     </div>
   </div>
 </section>
-
 <section id="booking" class="max-w-6xl mx-auto px-5 py-16">
   <div class="reveal text-center mb-8">
     <div class="step-label mb-2">Reservations</div>
     <h2 class="serif" style="font-size:36px;font-weight:700;margin:0 0 8px">Book Your <span class="gold-text">Trip</span></h2>
     <p style="color:var(--muted);max-width:520px;margin:0 auto;font-size:16px">Three simple steps. Live fare estimate + PDF quotation generated instantly.</p>
   </div>
-
   <div style="display:grid;grid-template-columns:1fr;gap:24px" class="lg:grid-cols-[1fr_320px]">
     <div class="card-el reveal p-6 md:p-8" style="background:var(--card)">
       <div style="display:flex;align-items:center;margin-bottom:32px">
@@ -311,12 +305,10 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
         <span style="width:40px;text-align:center">Details</span>
         <span style="width:40px;text-align:center">Confirm</span>
       </div>
-
       <form id="bkForm" novalidate>
       <div class="step-pane active" id="step1">
         <h3 class="serif" style="font-size:26px;font-weight:700;margin:0 0 4px">Service &amp; Vehicle</h3>
         <p style="color:var(--muted);font-size:15px;margin:0 0 20px">Tell us where you're going and how many are traveling.</p>
-
         <label class="block mb-1.5 font-semibold" style="color:var(--text);font-size:15px">Service Type <span style="color:var(--red)">*</span></label>
         <select id="f_service" required>
           <option value="">— Select Service —</option>
@@ -340,11 +332,9 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
           </optgroup>
         </select>
         <div class="err-msg" id="err_service">Please select a service type.</div>
-
         <div id="customNotice" style="display:none;background:var(--gold-soft);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px;color:var(--gold-light)">
           Live fare estimate appears in Step 2. A branded PDF quotation is generated after booking.
         </div>
-
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
             <label class="block mb-1.5 font-semibold" style="font-size:15px">Passengers <span style="color:var(--red)">*</span></label>
@@ -357,18 +347,14 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
             <p style="font-size:12px;color:var(--muted);margin-top:4px">Affects vehicle recommendation</p>
           </div>
         </div>
-
         <div id="vehicleOptions" style="margin-top:18px"></div>
-
         <div style="margin-top:28px;text-align:right">
           <button type="button" class="gold-btn px-8 py-3.5 rounded-xl" id="toStep2">Continue →</button>
         </div>
       </div>
-
       <div class="step-pane" id="step2">
         <h3 class="serif" style="font-size:26px;font-weight:700;margin:0 0 4px">Trip Details</h3>
         <p style="color:var(--muted);font-size:15px;margin:0 0 20px">Enter your locations — your fare estimate appears automatically.</p>
-
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block mb-1.5 font-semibold" style="font-size:15px">Pickup Date <span style="color:var(--red)">*</span></label>
@@ -381,7 +367,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
             <div class="err-msg" id="err_time">Please select a time.</div>
           </div>
         </div>
-
         <div class="mt-4">
           <label class="block mb-1.5 font-semibold" style="font-size:15px" id="lbl_pickup">Pickup Location <span style="color:var(--red)">*</span></label>
           <select id="f_pickup_naia" style="display:none">
@@ -392,7 +377,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
           <input type="text" id="f_pickup_text" placeholder="e.g. Santa Rosa, Laguna / SM Lipa / Dasmariñas">
           <div class="err-msg" id="err_pickup">Please enter pickup location.</div>
         </div>
-
         <div class="mt-4">
           <label class="block mb-1.5 font-semibold" style="font-size:15px" id="lbl_dropoff">Drop-off / Destination <span style="color:var(--red)">*</span></label>
           <select id="f_dropoff_naia" style="display:none">
@@ -403,7 +387,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
           <input type="text" id="f_dropoff_text" placeholder="e.g. NAIA Terminal 3 / Tagaytay / Manila">
           <div class="err-msg" id="err_dropoff">Please enter destination.</div>
         </div>
-
         <div class="fare-box" id="fareBox">
           <div class="fare-title">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -416,12 +399,10 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
           </div>
           <div class="fare-note" id="fareNote"></div>
         </div>
-
         <div class="mt-4" id="flightField" style="display:none">
           <label class="block mb-1.5 font-semibold" style="font-size:15px">Flight Number <span style="color:var(--muted);font-weight:400;font-size:13px">(for flight tracking)</span></label>
           <input type="text" id="f_flight" placeholder="e.g. PR 123 / 5J 456">
         </div>
-
         <div class="mt-4">
           <label class="block mb-1.5 font-semibold" style="font-size:15px">Payment Method <span style="color:var(--red)">*</span></label>
           <select id="f_payment" required>
@@ -431,22 +412,18 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
           </select>
           <div class="err-msg" id="err_payment">Please select a payment method.</div>
         </div>
-
         <div class="mt-4">
           <label class="block mb-1.5 font-semibold" style="font-size:15px">Notes / Special Requests</label>
           <textarea id="f_notes" rows="2" placeholder="Child seat needed? Extra stop? Exact address?"></textarea>
         </div>
-
         <div style="margin-top:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
           <button type="button" class="ghost-btn px-6 py-3.5 rounded-xl" id="backStep1">← Back</button>
           <button type="button" class="gold-btn px-8 py-3.5 rounded-xl" id="toStep3">Review Booking →</button>
         </div>
       </div>
-
       <div class="step-pane" id="step3">
         <h3 class="serif" style="font-size:26px;font-weight:700;margin:0 0 4px">Your Details &amp; Send</h3>
         <p style="color:var(--muted);font-size:15px;margin:0 0 20px">Almost there! How should we reach you?</p>
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block mb-1.5 font-semibold" style="font-size:15px">Full Name <span style="color:var(--red)">*</span></label>
@@ -462,9 +439,8 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
         <div class="mt-4">
           <label class="block mb-1.5 font-semibold" style="font-size:15px">Contact Number <span style="color:var(--red)">*</span></label>
           <input type="tel" id="f_phone" placeholder="09XX-XXX-XXXX" required>
-          <div class="err-msg" id="err_phone">Please enter a valid PH mobile number.</div>
+          <div class="err-msg" id="err_phone">Please enter a valid PH mobile number (11 digits).</div>
         </div>
-
         <div class="mt-5">
           <label class="block mb-2 font-semibold" style="font-size:15px">Send Booking Via <span style="color:var(--red)">*</span></label>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -482,7 +458,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
             </div>
           </div>
         </div>
-
         <div style="margin-top:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
           <button type="button" class="ghost-btn px-6 py-3.5 rounded-xl" id="backStep2">← Back</button>
           <button type="submit" class="gold-btn px-8 py-3.5 rounded-xl" id="submitBtn">Confirm &amp; Send Booking</button>
@@ -490,7 +465,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       </div>
       </form>
     </div>
-
     <div class="reveal">
       <div class="card-el p-6" style="position:sticky;top:90px;background:linear-gradient(160deg,var(--card),var(--card2));border-color:rgba(212,175,55,.25)">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
@@ -515,7 +489,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     </div>
   </div>
 </section>
-
 <div id="successScreen" style="display:none" class="max-w-2xl mx-auto px-5 py-16 text-center">
   <div class="card-el success-anim p-8 md:p-12" style="border-color:rgba(212,175,55,.4);background:linear-gradient(160deg,var(--card),rgba(212,175,55,.06))">
     <div class="check-ring">
@@ -541,7 +514,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     <button class="ghost-btn px-6 py-2.5 rounded-lg text-sm mt-6" id="newBooking">+ Make Another Booking</button>
   </div>
 </div>
-
 <section id="payment" class="max-w-4xl mx-auto px-5 py-16">
   <div class="reveal text-center mb-8">
     <div class="step-label mb-2">Settlements</div>
@@ -577,7 +549,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     </div>
   </div>
 </section>
-
 <section class="py-16" style="background:linear-gradient(180deg,transparent,rgba(212,175,55,.04),transparent)">
   <div class="max-w-6xl mx-auto px-5">
     <div class="reveal text-center mb-10">
@@ -606,7 +577,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     </div>
   </div>
 </section>
-
 <section id="faq" class="max-w-3xl mx-auto px-5 py-16">
   <div class="reveal text-center mb-8">
     <div class="step-label mb-2">Good to Know</div>
@@ -622,7 +592,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     <div class="faq-item"><div class="faq-q">What is your cancellation policy?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Free cancellation up to 24 hours before pickup. Last-minute changes may incur a small fee. Contact us via WhatsApp or Viber for the fastest response.</div></div>
   </div>
 </section>
-
 <footer style="border-top:1px solid var(--border);padding:40px 24px;text-align:center">
   <div class="max-w-4xl mx-auto">
     <img src="https://i.imgur.com/DWfEGWv.png" alt="GoCav" style="height:56px;border-radius:10px;margin:0 auto 16px" onerror="this.style.display='none'">
@@ -631,12 +600,9 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     <p style="color:#5a5c72;font-size:13px;margin:12px 0 0">Non-VAT Reg. 940-158-988-0000 · © 2019–2026 GoCav Transport Services</p>
   </div>
 </footer>
-
 </div>
-
 <script>
 (function(){
-  var GOOGLE_MAPS_KEY = "";
   var WA = "639760465134", VB = "639760465134", EM = "gocav.transport@gmail.com";
   var VEHICLES = {
     accent:  { name:'Hyundai Accent',       oneWay:1500, roundTrip:2500, comfortPax:3, maxPax:4, comfortBags:2, maxBags:3, tag:'comfort', class:'sedan',  perKm:35, tourFlat:5000 },
@@ -679,17 +645,27 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
   // Home base = Le Rica Homes, Begonia St, Brgy. San Francisco, General Trias, Cavite.
   // Only pickups matching this area waive the 50% positioning fee; everything else is charged from the garage.
   var BASE_KEYWORDS = ['general trias','gen trias','gentri','le rica'];
-
   var state = { step:1, sendMethod:'Email', selectedVehicle:null, lastFare:null, lastBooking:null };
   var $ = function(id){ return document.getElementById(id); };
 
+  // FIX #1: pickup/dropoff error highlight now targets the *visible* field (text input or NAIA select).
+  // Previously showErr('pickup') looked for a non-existent #f_pickup element, so the red border never appeared.
   function showErr(id, show){
-    var el = $('f_'+id) || $(id);
-    if(el) el.classList.toggle('field-error', show);
+    if(id==='pickup'){
+      var pn=$('f_pickup_naia'), pt=$('f_pickup_text');
+      if(pn) pn.classList.toggle('field-error', show && pn.style.display!=='none');
+      if(pt) pt.classList.toggle('field-error', show && pt.style.display!=='none');
+    } else if(id==='dropoff'){
+      var dn=$('f_dropoff_naia'), dt=$('f_dropoff_text');
+      if(dn) dn.classList.toggle('field-error', show && dn.style.display!=='none');
+      if(dt) dt.classList.toggle('field-error', show && dt.style.display!=='none');
+    } else {
+      var el = $('f_'+id) || $(id);
+      if(el) el.classList.toggle('field-error', show);
+    }
     var em = $('err_'+id);
     if(em) em.classList.toggle('show', show);
   }
-
   function findGeo(text){
     var t = (text||'').toLowerCase();
     for(var i=0;i<GEO.length;i++){ for(var j=0;j<GEO[i].k.length;j++){ if(t.indexOf(GEO[i].k[j])>=0) return GEO[i]; } }
@@ -719,17 +695,16 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     else if(t.indexOf('manila')>=0 || t.indexOf('makati')>=0) base = 95;
     return Math.round(base*mult);
   }
-
   function getPickupRaw(){ return $('f_pickup_naia').style.display!=='none' ? $('f_pickup_naia').value : $('f_pickup_text').value; }
   function getDropoffRaw(){ return $('f_dropoff_naia').style.display!=='none' ? $('f_dropoff_naia').value : $('f_dropoff_text').value; }
-
   function computeFare(){
     var box = $('fareBox'), bd = $('fareBreakdown'), tot = $('fareTotal'), note = $('fareNote');
     var svc = $('f_service').value, svcType = (svc.split('|')[2])||'';
     if(!svc){ box.classList.remove('show'); state.lastFare=null; updateSummary(); return; }
     if(svcType.indexOf('TOUR')>=0){
-      var vkey = state.selectedVehicle || 'accent';
-      var v = VEHICLES[vkey];
+      // FIX #4 (guard): resolve vehicle key safely, never access .class/.perKm on undefined.
+      var vkeyT = (state.selectedVehicle && VEHICLES[state.selectedVehicle]) ? state.selectedVehicle : 'accent';
+      var v = VEHICLES[vkeyT];
       var flat = v.tourFlat;
       var lines = [{ label:'Day Tour Flat Rate (8–10 hrs) — '+v.name, val:flat }];
       bd.innerHTML = '<div class="fare-line"><span class="fl">Day Tour Flat Rate (8–10 hrs) — '+v.name+'</span><span class="fv">P'+flat.toLocaleString()+'</span></div>';
@@ -753,37 +728,39 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       updateSummary();
       return;
     }
-    var vclass = state.selectedVehicle ? VEHICLES[state.selectedVehicle].class : (parseInt($('f_pax').value)>3 ? 'mpv':'sedan');
-    var perKm = state.selectedVehicle ? VEHICLES[state.selectedVehicle].perKm : (parseInt($('f_pax').value)>3 ? 45 : 35);
+    // FIX #4 (guard): resolve vehicle key safely.
+    var paxNum = parseInt($('f_pax').value)||0;
+    var vkey = (state.selectedVehicle && VEHICLES[state.selectedVehicle]) ? state.selectedVehicle : (paxNum>3 ? 'avanza' : 'accent');
+    var vclass = VEHICLES[vkey].class;
+    var perKm = VEHICLES[vkey].perKm;
     var minFare = FARE[vclass].min;
     var tripKm = roadKm(pg, dg);
     if(svc.indexOf('ROUND')>=0 || svc.indexOf('TOUR')>=0) tripKm = tripKm*2;
     var baseFare = Math.max(tripKm*perKm, minFare);
-    var lines = [];
-    lines.push({ label:'Trip distance (~'+tripKm.toFixed(0)+' km) x P'+perKm+'/km', val:baseFare });
+    var lines2 = [];
+    lines2.push({ label:'Trip distance (~'+tripKm.toFixed(0)+' km) x P'+perKm+'/km', val:baseFare });
     var pickupOutOfBase = !isBaseZone(pickupTxt);
     var posFee = 0;
     if(pickupOutOfBase && svc.indexOf('TOUR')<0 && svc.indexOf('ROUND')<0){
       var posKm = roadKm(FARE.baseCoords, pg);
       posFee = posKm * perKm * FARE.positioningPct;
-      lines.push({ label:'Vehicle positioning (~'+posKm.toFixed(0)+' km @ 50% rate)', val:posFee });
+      lines2.push({ label:'Vehicle positioning (~'+posKm.toFixed(0)+' km @ 50% rate)', val:posFee });
     }
     var toll = estimateToll(pickupTxt, dropoffTxt, vclass);
     if(pickupOutOfBase && svc.indexOf('TOUR')<0 && svc.indexOf('ROUND')<0) toll = Math.round(toll*1.5);
-    lines.push({ label:'Toll fees (estimated)', val:toll });
+    lines2.push({ label:'Toll fees (estimated)', val:toll });
     var total = baseFare + posFee + toll;
     var html = '';
-    lines.forEach(function(l){ html += '<div class="fare-line"><span class="fl">'+l.label+'</span><span class="fv">P'+Math.round(l.val).toLocaleString()+'</span></div>'; });
+    lines2.forEach(function(l){ html += '<div class="fare-line"><span class="fl">'+l.label+'</span><span class="fv">P'+Math.round(l.val).toLocaleString()+'</span></div>'; });
     bd.innerHTML = html;
     tot.textContent = 'P'+Math.round(total).toLocaleString();
     note.innerHTML = '✓ Fuel included in per-km rate · ⚠ Toll is estimate, charged at actual · <span class="fare-calc">Matched: '+pg.name+' → '+dg.name+'</span>';
     box.classList.add('show');
-    state.lastFare = { total:Math.round(total), lines:lines, pg:pg.name, dg:dg.name, vclass:vclass };
+    state.lastFare = { total:Math.round(total), lines:lines2, pg:pg.name, dg:dg.name, vclass:vclass };
     updateSummary();
   }
   var fareTimer=null;
   function scheduleFare(){ clearTimeout(fareTimer); fareTimer=setTimeout(computeFare, 400); }
-
   function generatePDF(){
     try {
       var b = state.lastBooking; if(!b) return;
@@ -857,7 +834,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       doc.save('GoCav-Quotation-'+b.ref+'.pdf');
     } catch(e){ alert('PDF generation needs an internet connection to load. Please try again.'); }
   }
-
   try {
     var pc = $('particles');
     for (var i=0;i<14;i++){
@@ -871,14 +847,12 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       pc.appendChild(p);
     }
   } catch(e){}
-
   try {
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
     }, {threshold:0.12});
     document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
   } catch(e){ document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
-
   try {
     var cio = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
@@ -896,18 +870,15 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     }, {threshold:0.5});
     document.querySelectorAll('[data-count]').forEach(function(el){ cio.observe(el); });
   } catch(e){}
-
   document.querySelectorAll('[data-scroll]').forEach(function(el){
     el.addEventListener('click', function(){
       var t = document.querySelector(el.getAttribute('data-scroll'));
       if(t) t.scrollIntoView({behavior:'smooth'});
     });
   });
-
   document.querySelectorAll('.faq-q').forEach(function(q){
     q.addEventListener('click', function(){ q.parentElement.classList.toggle('open'); });
   });
-
   function ok(btn){ var old=btn.textContent; btn.textContent='✓ Copied'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent=old; btn.classList.remove('ok'); },1800); }
   document.querySelectorAll('.copy-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -916,16 +887,13 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       catch(e){ var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');ok(btn);}catch(e2){} document.body.removeChild(ta); }
     });
   });
-
   (function(){ var d = new Date(), iso = d.toISOString().split('T')[0]; var di=$('f_date'); if(di) di.min=iso; })();
-
   $('f_phone').addEventListener('input', function(){
     var v = this.value.replace(/\D/g,'').slice(0,11);
     if(v.length>=7) v = v.slice(0,4)+'-'+v.slice(4,7)+'-'+v.slice(7);
     else if(v.length>=4) v = v.slice(0,4)+'-'+v.slice(4);
     this.value = v;
   });
-
   document.querySelectorAll('.send-opt').forEach(function(opt){
     opt.addEventListener('click', function(){
       document.querySelectorAll('.send-opt').forEach(function(o){ o.classList.remove('selected'); });
@@ -933,7 +901,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       state.sendMethod = opt.getAttribute('data-method');
     });
   });
-
   document.querySelectorAll('.service-card').forEach(function(card){
     card.addEventListener('click', function(){
       document.querySelectorAll('.service-card').forEach(function(c){ c.classList.remove('selected'); });
@@ -949,7 +916,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       $('booking').scrollIntoView({behavior:'smooth'});
     });
   });
-
   function onServiceChange(){
     var val = $('f_service').value, type = (val.split('|')[2])||'';
     var pNaia = $('f_pickup_naia'), pTxt = $('f_pickup_text'), dNaia = $('f_dropoff_naia'), dTxt = $('f_dropoff_text');
@@ -982,7 +948,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     computeFare();
   }
   $('f_service').addEventListener('change', function(){ onServiceChange(); renderVehicles(); updateSummary(); });
-
   function renderVehicles(){
     var pax = parseInt($('f_pax').value)||0, bags = parseInt($('f_luggage').value)||0;
     var container = $('vehicleOptions');
@@ -1035,7 +1000,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
   }
   $('f_pax').addEventListener('input', function(){ renderVehicles(); updateSummary(); });
   $('f_luggage').addEventListener('input', function(){ renderVehicles(); updateSummary(); });
-
   function valOrDash(v){ return (v&&String(v).trim()) ? v : '—'; }
   function updateSummary(){
     var svc = $('f_service').value, svcName = svc ? svc.split('|')[1] : '';
@@ -1070,7 +1034,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     el.addEventListener('input', function(){ updateSummary(); scheduleFare(); });
     el.addEventListener('change', function(){ updateSummary(); scheduleFare(); });
   });
-
   function goToStep(n){
     state.step = n;
     [1,2,3].forEach(function(i){
@@ -1084,7 +1047,6 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     if(n===2) setTimeout(computeFare, 100);
     if(n===3) updateSummary();
   }
-
   function validateStep1(){
     var ok = true;
     if(!$('f_service').value){ showErr('service',true); ok=false; } else showErr('service',false);
@@ -1107,9 +1069,17 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
   $('toStep3').addEventListener('click', function(){ if(validateStep2()){ saveLocal(); goToStep(3); } });
   $('backStep2').addEventListener('click', function(){ goToStep(2); });
 
+  // FIX #3: saveLocal now MERGES with previously saved profile instead of overwriting it with empty strings.
+  // Previously, clicking "Continue" in Step 1 (before name/email are filled) wiped the saved profile.
   function saveLocal(){
     try {
-      var d = { name:$('f_name').value, email:$('f_email').value, phone:$('f_phone').value, payment:$('f_payment').value };
+      var old = JSON.parse(localStorage.getItem('gocav_profile')||'{}');
+      var d = {
+        name: $('f_name').value.trim() || old.name || '',
+        email: $('f_email').value.trim() || old.email || '',
+        phone: $('f_phone').value.trim() || old.phone || '',
+        payment: $('f_payment').value || old.payment || ''
+      };
       localStorage.setItem('gocav_profile', JSON.stringify(d));
     } catch(e){}
   }
@@ -1123,37 +1093,44 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     } catch(e){}
   }
   loadLocal();
-
   $('bkForm').addEventListener('submit', function(e){
     e.preventDefault();
     var ok = true;
     if(!$('f_name').value.trim()){ showErr('name',true); ok=false; } else showErr('name',false);
     var em = $('f_email').value.trim();
     if(!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ showErr('email',true); ok=false; } else showErr('email',false);
+    // FIX #2: PH mobile numbers are 11 digits (09XX-XXX-XXXX). Previously <10 accepted a too-short number.
     var ph = $('f_phone').value.replace(/\D/g,'');
-    if(ph.length<10){ showErr('phone',true); ok=false; } else showErr('phone',false);
+    if(ph.length<11){ showErr('phone',true); ok=false; } else showErr('phone',false);
     if(!ok){ goToStep(3); return; }
     saveLocal();
-
     var btn = $('submitBtn');
     btn.disabled = true; btn.textContent = 'Preparing…';
-
     var svc = $('f_service').value, parts = svc.split('|');
     var svcName = parts[1]||'Custom', svcType = parts[2]||'CUSTOM';
     var vname = state.selectedVehicle ? VEHICLES[state.selectedVehicle].name : 'To be assigned';
     var rateText = 'See quotation';
     if(state.lastFare && state.lastFare.total){ rateText = 'Estimated P'+state.lastFare.total.toLocaleString()+(state.lastFare.tour?' (flat day rate; fuel/toll/parking extra)':' (computed from distance)'); }
-    else if(state.selectedVehicle && svcType.indexOf('CUSTOM')<0 && svcType.indexOf('TOUR')<0){
+    else if(state.selectedVehicle && VEHICLES[state.selectedVehicle] && svcType.indexOf('CUSTOM')<0 && svcType.indexOf('TOUR')<0){
       var v = VEHICLES[state.selectedVehicle];
       rateText = (svcType.indexOf('ROUND')>=0 ? 'Round Trip: P'+v.roundTrip.toLocaleString() : 'One-Way: P'+v.oneWay.toLocaleString());
+    }
+    // FIX #5: fixed-rate (Cavite↔NAIA) bookings now get a real fare total + breakdown line in the PDF.
+    // Previously the PDF showed "—" as the total because state.lastFare was null for fixed rates.
+    var fareTotalNum = (state.lastFare && state.lastFare.total) ? state.lastFare.total : null;
+    var fareLinesArr = (state.lastFare && state.lastFare.lines) ? state.lastFare.lines : null;
+    if(fareTotalNum===null && state.selectedVehicle && VEHICLES[state.selectedVehicle] && svcType.indexOf('CUSTOM')<0 && svcType.indexOf('TOUR')<0){
+      var vf = VEHICLES[state.selectedVehicle];
+      fareTotalNum = svcType.indexOf('ROUND')>=0 ? vf.roundTrip : vf.oneWay;
+      fareLinesArr = [{ label: (svcType.indexOf('ROUND')>=0?'Round Trip (fixed rate)':'One-Way (fixed rate)')+' — '+vf.name, val: fareTotalNum }];
     }
     var ref = 'GC'+Date.now().toString().slice(-10);
     var flight = $('f_flight').value.trim();
     var fareDetail = '';
-    if(state.lastFare && state.lastFare.lines){
+    if(fareLinesArr && fareLinesArr.length && !(state.lastFare && state.lastFare.custom)){
       fareDetail = 'Fare Breakdown:\n';
-      state.lastFare.lines.forEach(function(l){ fareDetail += '  '+l.label+': P'+Math.round(l.val).toLocaleString()+'\n'; });
-      fareDetail += '  ESTIMATED TOTAL: P'+state.lastFare.total.toLocaleString()+'\n';
+      fareLinesArr.forEach(function(l){ fareDetail += '  '+l.label+': P'+Math.round(l.val).toLocaleString()+'\n'; });
+      if(fareTotalNum) fareDetail += '  ESTIMATED TOTAL: P'+fareTotalNum.toLocaleString()+'\n';
     }
     if(state.lastFare && state.lastFare.tour){
       fareDetail += '  Note: fuel, toll & parking charged to client at actual cost (not included above).\n';
@@ -1177,11 +1154,9 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       'Sent via: '+state.sendMethod+'\n' +
       '══════════════════════\n' +
       'GoCav Transport Services\n0976-046-5134 / 0995-435-5514\ngocav.transport@gmail.com';
-
     var emLink = 'mailto:'+EM+'?subject=Booking '+ref+' — '+encodeURIComponent($('f_name').value.trim())+'&body='+encodeURIComponent(msg);
     var waLink = 'https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     var vbLink = 'viber://chat?number='+VB+'&text='+encodeURIComponent(msg);
-
     state.lastBooking = {
       ref: ref, date: new Date().toLocaleDateString('en-PH'),
       name: $('f_name').value.trim(), email: em, phone: $('f_phone').value.trim(),
@@ -1191,10 +1166,9 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
       pax: $('f_pax').value, bags: $('f_luggage').value||'0',
       payment: $('f_payment').value, rateText: rateText,
       tour: !!(state.lastFare && state.lastFare.tour),
-      fareLines: state.lastFare && state.lastFare.lines ? state.lastFare.lines : null,
-      fareTotal: state.lastFare && state.lastFare.total ? state.lastFare.total : null
+      fareLines: fareLinesArr,
+      fareTotal: fareTotalNum
     };
-
     $('refNo').textContent = ref;
     $('followUpNote').textContent = (svcType.indexOf('CUSTOM')>=0 || svcType.indexOf('TOUR')>=0)
       ? 'Your estimated fare is shown above. Tap below to download your branded PDF quotation.'
@@ -1202,20 +1176,16 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     $('resendEm').href = emLink;
     $('resendWa').href = waLink;
     $('resendVb').href = vbLink;
-
     $('booking').style.display='none';
     $('successScreen').style.display='block';
     $('successScreen').scrollIntoView({behavior:'smooth'});
-
     setTimeout(function(){
       if(state.sendMethod==='Email') window.location.href = emLink;
       else if(state.sendMethod==='WhatsApp') window.open(waLink,'_blank');
       else window.location.href = vbLink;
     }, 700);
   });
-
   $('dlQuote').addEventListener('click', generatePDF);
-
   $('newBooking').addEventListener('click', function(){
     $('successScreen').style.display='none';
     $('booking').style.display='block';
@@ -1226,13 +1196,15 @@ input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webki
     $('vehicleOptions').innerHTML='';
     $('fareBox').classList.remove('show');
     var sb=$('submitBtn'); if(sb){ sb.disabled=false; sb.textContent='Confirm & Send Booking'; }
+    // FIX #6: restore saved profile (name/email/phone/payment) when starting another booking.
+    loadLocal();
     onServiceChange(); updateSummary(); goToStep(1);
     $('booking').scrollIntoView({behavior:'smooth'});
   });
-
   onServiceChange();
   updateSummary();
   goToStep(1);
 })();
 </script>
+</body>
 </html>
