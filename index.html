@@ -919,84 +919,119 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   function generatePDF(){
     try {
       var b = state.lastBooking; if(!b) return;
-      var jsPDF = window.jspdf.jsPDF;
-      var doc = new jsPDF({ unit:'pt', format:'a4' });
-      var W = doc.internal.pageSize.getWidth();
-      doc.setFillColor(212,175,55); doc.rect(0,0,W,70,'F');
-      doc.setTextColor(26,20,5);
-      doc.setFont('helvetica','bold'); doc.setFontSize(22);
-      doc.text('GoCav Transport Services', 40, 38);
-      doc.setFont('helvetica','normal'); doc.setFontSize(10);
-      doc.text('Premium Chauffeur Service · Cavite · Laguna · Batangas · All NCR', 40, 54);
-      doc.setFontSize(9);
-      doc.text('0976-046-5134 / 0995-435-5514 · gocav.transport@gmail.com', 40, 66);
-      doc.setTextColor(26,20,5); doc.setFontSize(11); doc.setFont('helvetica','bold');
-      doc.text('QUOTATION', W-40, 38, {align:'right'});
-      doc.setFont('helvetica','normal'); doc.setFontSize(9);
-      doc.text('Ref: '+b.ref, W-40, 54, {align:'right'});
-      doc.text('Date: '+b.date, W-40, 66, {align:'right'});
-      var y = 100;
-      doc.setTextColor(30,30,30);
-      doc.setFont('helvetica','bold'); doc.setFontSize(12);
-      doc.text('Client Details', 40, y); y+=18;
-      doc.setFont('helvetica','normal'); doc.setFontSize(10);
-      doc.text('Name: '+b.name, 40, y); y+=15;
-      doc.text('Email: '+b.email, 40, y); y+=15;
-      doc.text('Phone: '+b.phone, 40, y); y+=15;
-      doc.text('Account: '+(b.corporate?'Corporate (loyalty rates & invoicing)':'Standard'), 40, y); y+=22;
-      doc.setFont('helvetica','bold'); doc.setFontSize(12);
-      doc.text('Trip Details', 40, y); y+=18;
-      doc.setFont('helvetica','normal'); doc.setFontSize(10);
-      doc.text('Service: '+b.service, 40, y); y+=15;
-      doc.text('Vehicle: '+b.vehicle, 40, y); y+=15;
-      if(b.days){ doc.text('Duration: '+b.days+' consecutive days (returned to pickup daily)', 40, y); y+=15; }
-      doc.text('Date & Time: '+b.datetime+(b.days?' (start / daily pickup)':''), 40, y); y+=15;
-      doc.text('From: '+b.from, 40, y); y+=15;
-      doc.text('To: '+b.to, 40, y); y+=15;
-      if(b.flight){ doc.text('Flight: '+b.flight, 40, y); y+=15; }
-      doc.text('Passengers: '+b.pax+' · Bags: '+b.bags, 40, y); y+=22;
-      doc.setFont('helvetica','bold'); doc.setFontSize(12);
-      doc.text('Fare Breakdown', 40, y); y+=18;
-      doc.setDrawColor(212,175,55); doc.setLineWidth(1);
-      doc.line(40, y-8, W-40, y-8);
-      doc.setFont('helvetica','normal'); doc.setFontSize(10);
-      if(b.fareLines && b.fareLines.length){
-        b.fareLines.forEach(function(l){
-          var label = String(l.label||'')
-            .replace(/ \(Le Rica, GenTri\)/g, '')
-            .replace(/ \(ends at Le Rica, GenTri\)/g, '')
-            .replace(/Home Base → pickup/g, 'Base to pickup')
-            .replace(/Home Base →/g, 'Base to')
-            .replace(/ · Home: [^·<]+/g, '');
-          var valStr = (l.val<0 ? '-P ' : 'P ')+Math.abs(Math.round(l.val)).toLocaleString()+'.00';
-          doc.text(label, 40, y);
-          doc.text(valStr, W-40, y, {align:'right'});
-          y+=16;
-        });
-      } else {
-        doc.text(b.rateText, 40, y); y+=16;
+      var LOGO_URL = 'https://i.imgur.com/DWfEGWv.png';
+      function buildPdf(logoDataUrl){
+        try {
+          var jsPDF = window.jspdf.jsPDF;
+          var doc = new jsPDF({ unit:'pt', format:'a4' });
+          var W = doc.internal.pageSize.getWidth();
+          doc.setFillColor(212,175,55); doc.rect(0,0,W,78,'F');
+          var textLeft = 40;
+          if(logoDataUrl){
+            try {
+              doc.addImage(logoDataUrl, 'PNG', 36, 14, 48, 48);
+              textLeft = 96;
+            } catch(imgErr){ textLeft = 40; }
+          }
+          doc.setTextColor(26,20,5);
+          doc.setFont('helvetica','bold'); doc.setFontSize(20);
+          doc.text('GoCav Transport Services', textLeft, 34);
+          doc.setFont('helvetica','normal'); doc.setFontSize(9);
+          doc.text('Premium Chauffeur Service · Cavite · Laguna · Batangas · All NCR', textLeft, 50);
+          doc.setFontSize(8);
+          doc.text('0976-046-5134 / 0995-435-5514 · gocav.transport@gmail.com', textLeft, 64);
+          doc.setTextColor(26,20,5); doc.setFontSize(11); doc.setFont('helvetica','bold');
+          doc.text('QUOTATION', W-40, 34, {align:'right'});
+          doc.setFont('helvetica','normal'); doc.setFontSize(9);
+          doc.text('Ref: '+b.ref, W-40, 50, {align:'right'});
+          doc.text('Date: '+b.date, W-40, 64, {align:'right'});
+          doc.setTextColor(60,60,70); doc.setFont('helvetica','normal'); doc.setFontSize(8);
+          doc.text('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite', 40, 94);
+          doc.text('Non-VAT Reg. 940-158-988-0000', 40, 106);
+          var y = 128;
+          doc.setTextColor(30,30,30);
+          doc.setFont('helvetica','bold'); doc.setFontSize(12);
+          doc.text('Client Details', 40, y); y+=18;
+          doc.setFont('helvetica','normal'); doc.setFontSize(10);
+          doc.text('Name: '+b.name, 40, y); y+=15;
+          doc.text('Email: '+b.email, 40, y); y+=15;
+          doc.text('Phone: '+b.phone, 40, y); y+=15;
+          doc.text('Account: '+(b.corporate?'Corporate (loyalty rates & invoicing)':'Standard'), 40, y); y+=22;
+          doc.setFont('helvetica','bold'); doc.setFontSize(12);
+          doc.text('Trip Details', 40, y); y+=18;
+          doc.setFont('helvetica','normal'); doc.setFontSize(10);
+          doc.text('Service: '+b.service, 40, y); y+=15;
+          doc.text('Vehicle: '+b.vehicle, 40, y); y+=15;
+          if(b.days){ doc.text('Duration: '+b.days+' consecutive days (returned to pickup daily)', 40, y); y+=15; }
+          doc.text('Date & Time: '+b.datetime+(b.days?' (start / daily pickup)':''), 40, y); y+=15;
+          doc.text('From: '+b.from, 40, y); y+=15;
+          doc.text('To: '+b.to, 40, y); y+=15;
+          if(b.flight){ doc.text('Flight: '+b.flight, 40, y); y+=15; }
+          doc.text('Passengers: '+b.pax+' · Bags: '+b.bags, 40, y); y+=22;
+          doc.setFont('helvetica','bold'); doc.setFontSize(12);
+          doc.text('Fare Breakdown', 40, y); y+=18;
+          doc.setDrawColor(212,175,55); doc.setLineWidth(1);
+          doc.line(40, y-8, W-40, y-8);
+          doc.setFont('helvetica','normal'); doc.setFontSize(10);
+          if(b.fareLines && b.fareLines.length){
+            b.fareLines.forEach(function(l){
+              var label = String(l.label||'')
+                .replace(/ \(Le Rica, GenTri\)/g, '')
+                .replace(/ \(ends at Le Rica, GenTri\)/g, '')
+                .replace(/Home Base → pickup/g, 'Base to pickup')
+                .replace(/Home Base →/g, 'Base to')
+                .replace(/ · Home: [^·<]+/g, '');
+              var valStr = (l.val<0 ? '-P ' : 'P ')+Math.abs(Math.round(l.val)).toLocaleString()+'.00';
+              doc.text(label, 40, y);
+              doc.text(valStr, W-40, y, {align:'right'});
+              y+=16;
+            });
+          } else {
+            doc.text(b.rateText, 40, y); y+=16;
+          }
+          y+=6;
+          doc.setDrawColor(212,175,55); doc.line(40, y, W-40, y); y+=18;
+          doc.setFont('helvetica','bold'); doc.setFontSize(13);
+          doc.setTextColor(168,134,42);
+          doc.text('ESTIMATED TOTAL FARE', 40, y);
+          doc.text(b.fareTotal ? ('P '+b.fareTotal.toLocaleString()+'.00') : 'To be quoted', W-40, y, {align:'right'});
+          y+=28;
+          doc.setTextColor(90,90,90); doc.setFont('helvetica','normal'); doc.setFontSize(9);
+          doc.text('Payment: '+b.payment, 40, y); y+=14;
+          doc.text('Account Name: Tuhamie A. Dimanang · GCash/Maya: 0995-435-5514 · BPI: 0489-7200-78 · BDO: 0048 2022 1372', 40, y); y+=18;
+          doc.setFontSize(8);
+          if(b.dayRentalMulti){
+            doc.text('[!] Multi-day site visit: 8 hrs / 100 km per day, returned to pickup daily. 2-way toll x days & parking at actual. Valid 48 hrs.', 40, y);
+          } else if(b.dayRental){
+            doc.text('[!] Full-day rate includes 8 hrs / 100 km, fuel & driver. 2-way toll & parking charged at actual cost. Quotation valid 48 hrs.', 40, y);
+          } else {
+            doc.text('Fuel included. Toll & parking at actual cost. Night surcharge +12% (22:00-06:00). Quotation valid 48 hrs.', 40, y);
+          }
+          y+=12;
+          doc.text('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite', 40, y); y+=11;
+          doc.text('Non-VAT Reg. 940-158-988-0000', 40, y); y+=11;
+          doc.text('Cancellation: free up to 24h before pickup. See FAQ for full policy.', 40, y);
+          doc.save('GoCav-Quotation-'+b.ref+'.pdf');
+        } catch(e){ alert('PDF generation needs an internet connection to load. Please try again.'); }
       }
-      y+=6;
-      doc.setDrawColor(212,175,55); doc.line(40, y, W-40, y); y+=18;
-      doc.setFont('helvetica','bold'); doc.setFontSize(13);
-      doc.setTextColor(168,134,42);
-      doc.text('ESTIMATED TOTAL FARE', 40, y);
-      doc.text(b.fareTotal ? ('P '+b.fareTotal.toLocaleString()+'.00') : 'To be quoted', W-40, y, {align:'right'});
-      y+=28;
-      doc.setTextColor(90,90,90); doc.setFont('helvetica','normal'); doc.setFontSize(9);
-      doc.text('Payment: '+b.payment, 40, y); y+=14;
-      doc.text('Account Name: Tuhamie A. Dimanang · GCash/Maya: 0995-435-5514 · BPI: 0489-7200-78 · BDO: 0048 2022 1372', 40, y); y+=18;
-      doc.setFontSize(8);
-      if(b.dayRentalMulti){
-        doc.text('[!] Multi-day site visit: 8 hrs / 100 km per day, returned to pickup daily. 2-way toll x days & parking at actual. Valid 48 hrs.', 40, y);
-      } else if(b.dayRental){
-        doc.text('[!] Full-day rate includes 8 hrs / 100 km, fuel & driver. 2-way toll & parking charged at actual cost. Quotation valid 48 hrs.', 40, y);
-      } else {
-        doc.text('Fuel included. Toll & parking at actual cost. Night surcharge +12% (22:00-06:00). Quotation valid 48 hrs.', 40, y);
-      }
-      y+=12;
-      doc.text('Cancellation: free up to 24h before pickup. See FAQ for full policy. Non-VAT Reg. 940-158-988-0000', 40, y);
-      doc.save('GoCav-Quotation-'+b.ref+'.pdf');
+      // Load logo then build PDF (fallback without logo if image blocked)
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      var done = false;
+      function finish(dataUrl){ if(done) return; done = true; buildPdf(dataUrl||null); }
+      img.onload = function(){
+        try {
+          var c = document.createElement('canvas');
+          c.width = img.naturalWidth || img.width;
+          c.height = img.naturalHeight || img.height;
+          var ctx = c.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          finish(c.toDataURL('image/png'));
+        } catch(e){ finish(null); }
+      };
+      img.onerror = function(){ finish(null); };
+      setTimeout(function(){ if(!done) finish(null); }, 4000);
+      img.src = LOGO_URL;
     } catch(e){ alert('PDF generation needs an internet connection to load. Please try again.'); }
   }
   try {
