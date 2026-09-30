@@ -163,13 +163,13 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 <div style="background:radial-gradient(900px 500px at 85% -5%,rgba(212,175,55,.10),transparent 60%),var(--bg);min-height:100%;">
 <nav class="sticky-nav">
   <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-    <div class="flex items-center gap-4">
+    <a id="logoHome" href="#home" class="flex items-center gap-4" style="text-decoration:none;color:inherit;cursor:pointer">
       <img src="https://i.imgur.com/DWfEGWv.png" alt="GoCav" style="height:60px;border-radius:10px" onerror="this.style.display='none'">
       <div>
         <div class="serif font-bold" style="font-size:24px;line-height:1.1">GoCav Transport</div>
         <div style="font-size:11px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:700;margin-top:2px">Premium Chauffeur Service</div>
       </div>
-    </div>
+    </a>
     <div class="hidden md:flex items-center gap-6">
       <a class="nav-link" data-scroll="#services">Services</a>
       <a class="nav-link" data-scroll="#corporate">Corporate</a>
@@ -187,7 +187,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   <span style="font-size:13px;color:var(--text)">Open for <strong>driver partnership</strong> — we need about 2 units per city in NCR and nearby areas. <strong style="text-decoration:underline">See open cities →</strong></span>
 </div>
 
-<section style="position:relative;overflow:hidden;padding:80px 24px 60px;text-align:center">
+<section id="home" style="position:relative;overflow:hidden;padding:80px 24px 60px;text-align:center">
   <div class="hero-glow" style="width:400px;height:400px;background:var(--gold);top:-100px;left:10%"></div>
   <div class="hero-glow" style="width:300px;height:300px;background:var(--teal);bottom:-80px;right:10%;opacity:.3"></div>
   <div id="particles" style="position:absolute;inset:0;pointer-events:none"></div>
@@ -1298,6 +1298,14 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     }, {threshold:0.5});
     document.querySelectorAll('[data-count]').forEach(function(el){ cio.observe(el); });
   } catch(e){}
+  function goHomePage(e){
+    if(e) e.preventDefault();
+    if($('successScreen')) $('successScreen').style.display='none';
+    if($('booking')) $('booking').style.display='block';
+    try { history.replaceState(null,'', window.location.pathname + window.location.search); } catch(err){}
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  if($('logoHome')) $('logoHome').addEventListener('click', goHomePage);
   document.querySelectorAll('[data-scroll]').forEach(function(el){
     el.addEventListener('click', function(){
       var t = document.querySelector(el.getAttribute('data-scroll'));
