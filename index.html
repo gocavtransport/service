@@ -613,26 +613,30 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         <h3 style="font-weight:700;margin:2px 0 0;font-size:18px">Payment terms by service</h3>
       </div>
     </div>
-    <p style="color:var(--muted);font-size:14px;margin:0 0 14px">BPI / BDO preferred · GCash / Maya for small or urgent trips · Toll &amp; parking added at actual cost</p>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 14px">Corporate bookings are billed by service type. BPI or BDO is preferred. GCash or Maya is fine for smaller or urgent trips. Toll and parking, if any, are billed at actual cost on top of the estimate.</p>
     <div class="grid md:grid-cols-2 gap-3" style="font-size:14px">
       <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
-        <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">One-way &amp; same-day return</div>
-        <div style="color:var(--text);line-height:1.55">Settle within <strong>3 days</strong> after the trip. 8% off when you return the same day.</div>
+        <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">One-way transfer</div>
+        <div style="color:var(--text);line-height:1.6">Airport and point-to-point drops are billed after the ride. Please settle within <strong>3 days</strong>. Fuel is included; toll and parking are added at actual cost.</div>
+      </div>
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+        <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">Same-day return</div>
+        <div style="color:var(--text);line-height:1.6">Pickup and return on the same day. Corporate accounts get <strong>8% off when you return the same day</strong>. Please settle within <strong>3 days</strong> after the trip.</div>
       </div>
       <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
         <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">Multi-day round trip</div>
-        <div style="color:var(--text);line-height:1.55"><strong>50%</strong> to confirm the booking · balance after the return pickup.</div>
+        <div style="color:var(--text);line-height:1.6">For drop-off now and pickup on a later date. A <strong>50% reservation</strong> holds the vehicle. The remaining balance is due after the return trip, plus actual toll and parking.</div>
       </div>
       <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
         <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">Full-day / site visit</div>
-        <div style="color:var(--text);line-height:1.55">Invoiced after the visit · due <strong>Net 7</strong> · 2-way toll &amp; parking at actual.</div>
+        <div style="color:var(--text);line-height:1.6">Covers 8 hours and 100 km, with the client returned to pickup. We send the invoice after the visit. Payment is due within <strong>7 days</strong>. Extra hours, extra km, toll, and parking are billed separately at actual.</div>
       </div>
-      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+      <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px" class="md:col-span-2">
         <div style="font-weight:700;color:var(--gold-light);margin-bottom:6px">Multi-day site visit (2–7 days)</div>
-        <div style="color:var(--text);line-height:1.55">One invoice for the block · due <strong>Net 7</strong>. New accounts: Day-1 rate or 50% before start.</div>
+        <div style="color:var(--text);line-height:1.6">Same route each day for audits or plant visits, returned to pickup daily. You receive <strong>one invoice for the full block</strong>, due within <strong>7 days</strong>. Corporate loyalty is 5% for 2 days and 8% for 3–7 days. New clients: <strong>50% before Day 1</strong>, remainder after the last day. Repeat accounts may use weekly invoicing.</div>
       </div>
     </div>
-    <p style="font-size:13px;color:var(--muted);margin:14px 0 0">Send proof of payment via WhatsApp or Viber. Approved repeat accounts may move to weekly invoicing.</p>
+    <p style="font-size:13px;color:var(--muted);margin:14px 0 0">Please send proof of payment via WhatsApp or Viber after transfer. Booking is confirmed once we reply on your chosen channel.</p>
   </div>
 </section>
 <section class="py-16" style="background:linear-gradient(180deg,transparent,rgba(212,175,55,.04),transparent)">
@@ -955,21 +959,21 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   function scheduleFare(){ clearTimeout(fareTimer); fareTimer=setTimeout(computeFare, 400); }
   function getPayTerms(svcType, corporate){
     if(!corporate){
-      return 'Standard: Cash / GCash / Maya / bank transfer. Toll & parking at actual cost.';
+      return 'Pay by cash, GCash, Maya, or bank transfer. Fuel is included. Toll and parking, if any, are billed at actual cost.';
     }
     if(svcType==='DAYRENTAL_MULTI'){
-      return 'Corporate multi-day site visit: one invoice for the block, Net 7 (BPI/BDO). New accounts: Day-1 rate or 50% before start. Toll & parking at actual.';
+      return 'Multi-day site visit: one invoice for the full block, due within 7 days (BPI/BDO preferred). New clients: 50% before Day 1, remainder after the last day. Corporate loyalty 5% (2 days) or 8% (3-7 days) on the day rate. Toll and parking billed at actual cost.';
     }
     if(svcType==='DAYRENTAL'){
-      return 'Corporate full-day / site visit: invoiced after the visit, Net 7 (BPI/BDO). Toll & parking at actual.';
+      return 'Full-day / site visit: invoice sent after the visit, due within 7 days (BPI/BDO preferred). Includes 8 hrs / 100 km; extra time, distance, toll, and parking billed at actual cost.';
     }
     if(svcType==='TRANSFER_ROUND_MULTIDAY'){
-      return 'Corporate multi-day round trip: 50% to confirm, balance after return pickup (BPI/BDO). Toll & parking at actual.';
+      return 'Multi-day round trip: 50% reservation to hold the vehicle; remaining balance due after the return trip (BPI/BDO preferred). Toll and parking billed at actual cost.';
     }
     if(svcType==='TRANSFER_ROUND_SAMEDAY'){
-      return 'Corporate same-day return: settle within 3 days (BPI/BDO preferred). 8% off when you return the same day. Toll & parking at actual.';
+      return 'Same-day return: due within 3 days after the trip (BPI/BDO preferred). Corporate accounts receive 8% off when you return the same day. Toll and parking billed at actual cost.';
     }
-    return 'Corporate transfer: settle within 3 days (BPI/BDO preferred). Toll & parking at actual.';
+    return 'One-way transfer: due within 3 days after the trip (BPI/BDO preferred). Fuel included. Toll and parking billed at actual cost.';
   }
   function generatePDF(){
     try {
