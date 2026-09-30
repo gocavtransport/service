@@ -1088,21 +1088,59 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
             doc.text(termsLines, 40, y);
             y += termsLines.length * 12 + 4;
           }
-          doc.text('Account Name: Tuhamie A. Dimanang · GCash/Maya: 0995-435-5514 · BPI: 0489-7200-78 · BDO: 0048 2022 1372', 40, y); y+=18;
+          var accLine = doc.splitTextToSize('Account Name: Tuhamie A. Dimanang · GCash/Maya: 0995-435-5514 · BPI: 0489-7200-78 · BDO: 0048 2022 1372', W-80);
+          doc.text(accLine, 40, y);
+          y += accLine.length * 12 + 8;
           doc.setFontSize(8);
-          if(b.dayRentalMulti){
-            doc.text('[!] Multi-day site visit: 8 hrs / 100 km per day, returned to pickup daily. 2-way toll x days & parking at actual. Valid 48 hrs.', 40, y);
-          } else if(b.dayRental){
-            doc.text('[!] Full-day rate includes 8 hrs / 100 km, fuel & driver. 2-way toll & parking charged at actual cost. Quotation valid 48 hrs.', 40, y);
-          } else {
-            doc.text('Fuel included. Toll & parking at actual cost. Night surcharge +12% (22:00-06:00). Quotation valid 48 hrs.', 40, y);
+          function writeJustified(text, x, yPos, maxW, lineH){
+            var words = String(text||'').split(/\s+/).filter(Boolean);
+            var lines = [];
+            var cur = [];
+            function widthOf(arr){
+              var w = 0;
+              arr.forEach(function(wd,i){ w += doc.getTextWidth(wd) + (i<arr.length-1?doc.getTextWidth(' '):0); });
+              return w;
+            }
+            words.forEach(function(wd){
+              var trial = cur.concat([wd]);
+              if(cur.length && widthOf(trial) > maxW){ lines.push(cur); cur = [wd]; }
+              else cur = trial;
+            });
+            if(cur.length) lines.push(cur);
+            lines.forEach(function(arr, idx){
+              var isLast = idx === lines.length-1;
+              if(isLast || arr.length===1){
+                doc.text(arr.join(' '), x, yPos);
+              } else {
+                var wordW = 0;
+                arr.forEach(function(wd){ wordW += doc.getTextWidth(wd); });
+                var gap = (maxW - wordW) / (arr.length-1);
+                var cx = x;
+                arr.forEach(function(wd){
+                  doc.text(wd, cx, yPos);
+                  cx += doc.getTextWidth(wd) + gap;
+                });
+              }
+              yPos += lineH;
+            });
+            return yPos;
           }
-          y+=12;
-          doc.text('Driver and plate number are confirmed on Viber or WhatsApp the day before pickup.', 40, y); y+=11;
-          doc.text('Airport waiting: 45 minutes free after driver-on-stand notice. Extra wait billed per 30 min. Flight number tracked at no extra charge within a reasonable window.', 40, y); y+=11;
-          doc.text('Full-day includes 8 hours; extra time billed at the vehicle excess-hour rate.', 40, y); y+=11;
-          doc.text('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite', 40, y); y+=11;
-          doc.text('Cancellation: free up to 24h before pickup. See FAQ for full policy.', 40, y);
+          var notes = [];
+          if(b.dayRentalMulti){
+            notes.push('Multi-day site visit includes 8 hours and 100 km per day. The client is returned to pickup each day. Two-way toll and parking are billed at actual cost. This quotation is valid for 48 hours.');
+          } else if(b.dayRental){
+            notes.push('Full-day rate includes 8 hours and 100 km, fuel, and driver. The client is returned to pickup. Two-way toll and parking are billed at actual cost. This quotation is valid for 48 hours.');
+          } else {
+            notes.push('Fuel is included. Toll and parking are billed at actual cost. Night trips from 22:00 to 06:00 have a 12% surcharge. This quotation is valid for 48 hours.');
+          }
+          notes.push('The assigned driver and plate number are confirmed on Viber or WhatsApp the day before pickup.');
+          notes.push('Airport waiting: 45 minutes free after we notify you that the driver is on stand. Extra waiting is billed every 30 minutes. If a flight number is given, delays are tracked at no extra charge within a reasonable window.');
+          notes.push('Full-day and site-visit service includes 8 hours. Time beyond that is billed at the vehicle excess-hour rate.');
+          notes.push('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite.');
+          notes.push('Cancellation is free up to 24 hours before pickup. See the website FAQ for the full policy.');
+          notes.forEach(function(n){
+            y = writeJustified(n, 40, y, W-80, 11) + 4;
+          });
           doc.save('GoCav-Quotation-'+b.ref+'.pdf');
         } catch(e){ alert('PDF generation needs an internet connection to load. Please try again.'); }
       }
