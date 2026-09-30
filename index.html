@@ -727,7 +727,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   <div class="reveal text-center mb-8">
     <div class="step-label mb-2">Drive with GoCav</div>
     <h2 class="serif" style="font-size:32px;font-weight:700;margin:0 0 8px">Driver Partnership</h2>
-    <p style="color:var(--muted);font-size:15px;max-width:640px;margin:0 auto">We keep about <strong style="color:var(--text)">2 partner units per city</strong> (or a nearby city) across NCR and adjoining Cavite / Laguna. Apply only where a slot is still open. Clean unit, valid papers, and a professional chauffeur required.</p>
+    <p style="color:var(--muted);font-size:15px;max-width:640px;margin:0 auto">We keep about <strong style="color:var(--text)">2 partner units per city</strong> (or a nearby city) across NCR and adjoining Cavite / Laguna. Apply only where a slot is still open. Clean unit, valid papers, and a professional chauffeur required.</p><p style="color:var(--muted);font-size:15px;max-width:640px;margin:12px auto 0">GoCav invoices the client. Partners are paid weekly. Coordination fee is <strong style="color:var(--gold-light)">20%</strong> of the trip fare. Toll and parking are billed at actual cost and are not part of the 20%.</p>
   </div>
   <div id="partnerCityGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-10"></div>
   <div class="card-el p-6 md:p-8 reveal">
@@ -1754,7 +1754,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       'Year: '+($('p_year').value||'Not given')+'\n'+
       'Plate: '+($('p_plate').value.trim()||'Not given')+'\n'+
       'Drives own unit: '+($('p_with_driver').checked?'Yes':'No')+'\n'+
-      'Notes: '+($('p_notes').value.trim()||'None')+'\n'+
+      'Notes: '+($('p_notes').value.trim()||'None')+'\n'+'Fee: 20% of trip fare to GoCav; partner paid weekly. Toll/parking at actual.\n'+
       '══════════════════════\nGoCav Transport Services';
     return { msg: msg, subject: 'Driver partner — '+name+' — '+city };
   }
