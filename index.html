@@ -259,7 +259,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     <div class="card-el service-card reveal p-6 text-center" data-service="ROUND_SAMEDAY|Round Trip - Same-Day Return|TRANSFER_ROUND_SAMEDAY">
       <img src="https://i.imgur.com/BJWSNNF.jpeg" alt="Round Trip" style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:14px" onerror="this.style.display='none'">
       <h3 class="serif" style="font-size:24px;font-weight:700;margin:0 0 4px">Airport Round Trip</h3>
-      <p style="color:var(--muted);font-size:14px;margin:0 0 10px">Same-day or multi-day returns. Corporate accounts get 8% loyalty discount on the return leg.</p>
+      <p style="color:var(--muted);font-size:14px;margin:0 0 10px">Same-day or multi-day returns. Corporate accounts get 8% off when you return the same day.</p>
       <div style="color:var(--gold-light);font-weight:700;font-size:15px">Dynamic fare · NAIA &amp; Clark served</div>
     </div>
   </div>
@@ -280,7 +280,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       <div class="reveal card-el p-6">
         <div class="feature-icon mb-4"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
         <h3 style="font-weight:700;margin:0 0 6px;font-size:17px">8% Loyalty Discount</h3>
-        <p style="color:var(--muted);font-size:14px;margin:0">Corporate accounts automatically receive 8% off the return leg on same-day round trips, reflected live in your estimate.</p>
+        <p style="color:var(--muted);font-size:14px;margin:0">Corporate accounts automatically receive 8% off when you return the same day — shown live in your estimate.</p>
       </div>
       <div class="reveal card-el p-6">
         <div class="feature-icon mb-4"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg></div>
@@ -349,7 +349,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           <option value="">— Select Service —</option>
           <optgroup label="Point-to-Point Transfers (dynamic fare)">
             <option value="ONEWAY|One-Way Transfer|TRANSFER_ONEWAY">One-Way Transfer</option>
-            <option value="ROUND_SAMEDAY|Round Trip - Same-Day Return|TRANSFER_ROUND_SAMEDAY">Round Trip — Same-Day Return (corporate: 8% off return leg)</option>
+            <option value="ROUND_SAMEDAY|Round Trip - Same-Day Return|TRANSFER_ROUND_SAMEDAY">Round Trip — Same-Day Return (corporate: 8% off when you return the same day)</option>
             <option value="ROUND_MULTIDAY|Round Trip - Multi-Day Return|TRANSFER_ROUND_MULTIDAY">Round Trip — Multi-Day Return (includes empty legs)</option>
           </optgroup>
           <optgroup label="Full-Day Rental (8 hrs / 100 km included)">
@@ -360,7 +360,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         <div class="err-msg" id="err_service">Please select a service type.</div>
         <div class="corp-box">
           <label><input type="checkbox" id="f_corporate"><span>Corporate Account</span></label>
-          <div class="corp-sub" style="margin-left:34px">8% on same-day returns · Multi-day site visit loyalty (5%/8%) · Priority dispatch · Weekly/monthly invoicing</div>
+          <div class="corp-sub" style="margin-left:34px">8% off when you return the same day · Multi-day site visit loyalty (5%/8%) · Priority dispatch · Weekly/monthly invoicing</div>
         </div>
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
@@ -638,9 +638,9 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     <h2 class="serif" style="font-size:32px;font-weight:700;margin:0">Frequently Asked Questions</h2>
   </div>
   <div class="reveal">
-    <div class="faq-item"><div class="faq-q">How is the fare calculated?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Every trip is priced dynamically: base charge + loaded distance (₱28/34/40 per km by vehicle) + vehicle positioning from our home base in General Trias (if pickup is outside our base zone) + estimated toll + airport fee (NAIA/Clark) + 12% night surcharge (22:00–06:00). Corporate accounts get 8% off the return leg on same-day round trips. Fuel is always included.</div></div>
+    <div class="faq-item"><div class="faq-q">How is the fare calculated?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Every trip is priced dynamically: base charge + loaded distance (₱28/34/40 per km by vehicle) + vehicle positioning from our home base in General Trias (if pickup is outside our base zone) + estimated toll + airport fee (NAIA/Clark) + 12% night surcharge (22:00–06:00). Corporate accounts get 8% off when you return the same day. Fuel is always included.</div></div>
     <div class="faq-item"><div class="faq-q">Do you serve all of Metro Manila?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Yes — Makati, BGC, Manila, Quezon City, Pasig, Mandaluyong, Parañaque, Pasay, Las Piñas, Muntinlupa, Marikina, San Juan, Caloocan, Valenzuela, Malabon, Navotas, plus all of Cavite, Laguna, Batangas, and Clark Airport. All locations produce an instant live estimate.</div></div>
-    <div class="faq-item"><div class="faq-q">How do corporate accounts work?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Tick the "Corporate Account" box when booking. You'll receive 8% loyalty discount on same-day return legs, multi-day site-visit loyalty (5% for 2 days, 8% for 3–7 days on the day-rate portion), priority dispatch, and consolidated weekly/monthly invoicing (select "Corporate Billing (Invoice)" as payment method). Perfect for airport transfers and full-day or multi-day site visits.</div></div>
+    <div class="faq-item"><div class="faq-q">How do corporate accounts work?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Tick the "Corporate Account" box when booking. You'll receive 8% off when you return the same day, multi-day site-visit loyalty (5% for 2 days, 8% for 3–7 days on the day-rate portion), priority dispatch, and consolidated weekly/monthly invoicing (select "Corporate Billing (Invoice)" as payment method). Perfect for airport transfers and full-day or multi-day site visits.</div></div>
     <div class="faq-item"><div class="faq-q">What's included in full-day rental?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">8 hours and 100 km total, with driver and fuel included. The client is returned to the original pickup point. Excess distance is billed per km and excess hours per hour by vehicle class. Two-way toll fees are estimated in your quote and charged at actual cost, along with parking. Pickup at our home base gets an additional discount.</div></div>
     <div class="faq-item"><div class="faq-q">What is Multi-Day Site Visit?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">For corporate clients who need the same route over consecutive days (e.g. audits or plant visits). Each day is a full-day package (8 hrs / 100 km), and the client is returned to the original pickup point every day. Book 2–7 days. Corporate loyalty: 5% off day rates for 2 days, 8% for 3–7 days. Two-way toll × number of days is estimated; excess km/hours billed if you exceed the daily package. Same driver/vehicle preferred subject to availability.</div></div>
     <div class="faq-item"><div class="faq-q">Are toll fees and parking included?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Fuel is included. Toll fees are estimated in your live quote and charged at actual cost. For full-day and multi-day site visits, toll is estimated two-way (and × days for multi-day). Parking is paid by the client at actual cost. Both are shown as separate line items in your estimate and PDF quotation.</div></div>
@@ -887,7 +887,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     if(clarkVisits){ var cf = v.clarkFee*clarkVisits; lines.push({ label:'Clark airport fee (×'+clarkVisits+')', val:cf }); total+=cf; }
     if(isSameDay && state.corporate){
       var disc = Math.round(0.08 * loadedPerLeg);
-      lines.push({ label:'Corporate loyalty discount (8% of return leg)', val:-disc, disc:true });
+      lines.push({ label:'Corporate loyalty discount (8% off when you return the same day)', val:-disc, disc:true });
       total -= disc;
     }
     if(isBaseZone(dropoffTxt)){
