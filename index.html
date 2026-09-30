@@ -1222,6 +1222,14 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     $('line2').classList.toggle('done', n>2);
     if(n===2) setTimeout(computeFare, 100);
     if(n===3) updateSummary();
+    // Scroll so the next step title + inputs sit just under the sticky nav (not mid-page)
+    setTimeout(function(){
+      var pane = $('step'+n);
+      if(!pane) return;
+      var target = pane.querySelector('h3') || pane;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - 100;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }, 60);
   }
   function validateStep1(){
     var ok = true;
@@ -1296,7 +1304,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     if(!ok){
       goToStep(3);
       var firstErr = document.querySelector('.err-msg.show');
-      if(firstErr) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
+      if(firstErr){ var t = firstErr.getBoundingClientRect().top + window.pageYOffset - 120; window.scrollTo({ top: Math.max(0, t), behavior: 'smooth' }); }
       return;
     }
     saveLocal();
