@@ -25,7 +25,7 @@
 html{scroll-behavior:smooth}
 body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.6;font-size:15px}
 h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;letter-spacing:-.01em}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal{opacity:1;transform:none}
 .reveal.in{opacity:1;transform:translateY(0)}
 .gold-text{background:linear-gradient(100deg,var(--gold-dark),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent}
 .gold-btn{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#1a1405;font-weight:700;transition:all .25s;cursor:pointer;border:none;font-size:15px}
@@ -868,12 +868,13 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   ];
   var BASE_KEYWORDS = ['general trias','gen trias','gentri','le rica'];
   var state = { step:1, sendMethod:'Email', selectedVehicle:null, lastFare:null, lastBooking:null, corporate:false };
-  // Stay at top of page on first visit (do not auto-jump to #booking)
-  if(window.location.hash === '#booking'){
-    history.replaceState(null, '', window.location.pathname + window.location.search);
-  }
-  if('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  window.scrollTo(0, 0);
+  try {
+    if(window.location.hash === '#booking'){
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  } catch(e){}
   var $ = function(id){ return document.getElementById(id); };
   function showErr(id, show){
     var el = $('f_'+id) || $(id);
@@ -1745,4 +1746,123 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       if(!want) veh = 1;
       else if(want===u.cls) veh = 3;
       else veh = 0;
-      return { u:u, score: loc*2 + veh, loc:loc, veh:veh }
+      return { u:u, score: loc*2 + veh, loc:loc, veh:veh };
+    }).filter(function(x){ return x.loc>0; }).sort(function(a,b){ return b.score-a.score; });
+    return scored;
+  }
+  function renderPartnerSuggest(){
+    var box = $('partnerSuggestBox'), list = $('partnerSuggestList'), sel = $('f_pref_partner');
+    if(!box||!list||!sel) return;
+    var pickupOn = $('f_pickup') && $('f_pickup').value.trim().length>=3;
+    if(!pickupOn){ box.style.display='none'; return; }
+    var hits = matchPartnerUnits();
+    var keep = sel.value;
+    sel.innerHTML = '<option value="">— Auto-assign nearest available driver —</option>';
+    box.style.display = 'block';
+    if(!hits.length){
+      list.innerHTML = '<p style="margin:0;color:var(--text)">We are looking for the nearest available driver in your area. The unit will be confirmed the day before pickup.</p>';
+      sel.style.display = 'none';
+      var lab = sel.previousElementSibling; if(lab && lab.tagName==='LABEL') lab.style.display='none';
+      return;
+    }
+    sel.style.display = '';
+    var lab2 = sel.previousElementSibling; if(lab2 && lab2.tagName==='LABEL') lab2.style.display='';
+    var className = { accent:'Sedan', avanza:'6-Seater', montero:'SUV' };
+    var top = hits.slice(0,3);
+    list.innerHTML = '<p style="margin:0 0 6px;color:var(--muted);font-size:13px">Nearest available based on your pickup:</p>' + top.map(function(x){
+      var u = x.u;
+      var cls = className[u.cls] || u.cls;
+      var fit = x.veh>=3 ? ' · fits your selected class' : '';
+      return '<div style="margin:4px 0"><strong>'+u.driver+'</strong> · '+cls+' · '+u.unit+fit+'</div>';
+    }).join('');
+    hits.forEach(function(x){
+      var o = document.createElement('option');
+      o.value = x.u.id;
+      o.textContent = x.u.driver+' · '+(className[x.u.cls]||x.u.cls)+' · '+x.u.unit;
+      sel.appendChild(o);
+    });
+    if(keep && [].some.call(sel.options, function(o){ return o.value===keep; })) sel.value = keep;
+  }
+  function partnerDispatchLine(){
+    var pref = $('f_pref_partner') && $('f_pref_partner').value;
+    var u = null;
+    if(pref){ PARTNER_UNITS.forEach(function(p){ if(p.id===pref) u = p; }); }
+    if(!u){
+      var hits = matchPartnerUnits();
+      if(hits.length) u = hits[0].u;
+    }
+    if(!u) return 'Partner unit: to be assigned';
+    return 'Suggested partner: '+u.driver+(u.phone?' '+u.phone:'')+' · '+u.unit+' '+u.plate+' · base '+u.base;
+  }
+  var PARTNER_SLOTS = 2;
+  function renderPartnerCities(){
+    var grid = $('partnerCityGrid'), sel = $('p_city');
+    if(!grid || !sel) return;
+    grid.innerHTML = '';
+    sel.innerHTML = '<option value="">— Select open city —</option>';
+    PARTNER_CITIES.forEach(function(c){
+      var open = (c.filled||0) < PARTNER_SLOTS;
+      var left = Math.max(0, PARTNER_SLOTS - (c.filled||0));
+      var card = document.createElement('div');
+      card.className = 'city-slot '+(open?'open':'full');
+      card.innerHTML = '<div class="city-name">'+c.name+'</div><div class="city-meta">'+(open ? ('Open — '+left+' of '+PARTNER_SLOTS+' slots') : 'Full — nearby city only')+'</div>';
+      grid.appendChild(card);
+      if(open){
+        var opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = c.name+' ('+left+' slot'+(left===1?'':'s')+' left)';
+        sel.appendChild(opt);
+      }
+    });
+  }
+  function showPErr(id, on){ var el=$('err_'+id); if(el) el.classList.toggle('show', !!on); }
+  function partnerPayload(){
+    var name = ($('p_name').value||'').trim();
+    var phone = ($('p_phone').value||'').replace(/\D/g,'');
+    if(phone.length===12 && phone.indexOf('63')===0) phone = '0'+phone.slice(2);
+    if(phone.length===10 && phone.charAt(0)==='9') phone = '0'+phone;
+    var city = $('p_city').value;
+    var veh = $('p_vehicle').value;
+    var ok = true;
+    showPErr('pname', !name); if(!name) ok=false;
+    showPErr('pphone', phone.length<11); if(phone.length<11) ok=false;
+    showPErr('pcity', !city); if(!city) ok=false;
+    showPErr('pvehicle', !veh); if(!veh) ok=false;
+    if(!ok) return null;
+    var msg = 'DRIVER PARTNER APPLICATION\n══════════════════════\n'+
+      'Name: '+name+'\n'+
+      'Mobile: '+$('p_phone').value.trim()+'\n'+
+      'Base city: '+city+'\n'+
+      'Vehicle: '+veh+'\n'+
+      'Year: '+($('p_year').value||'Not given')+'\n'+
+      'Plate: '+($('p_plate').value.trim()||'Not given')+'\n'+
+      'Drives own unit: '+($('p_with_driver').checked?'Yes':'No')+'\n'+
+      'Notes: '+($('p_notes').value.trim()||'None')+'\n'+'Fee: 20% of trip fare to GoCav; partner paid weekly. Toll/parking at actual.\n'+
+      '══════════════════════\nGoCav Transport Services';
+    return { msg: msg, subject: 'Driver partner — '+name+' — '+city };
+  }
+  function sendPartner(via){
+    var p = partnerPayload(); if(!p) return;
+    var emLink = 'mailto:'+EM+'?subject='+encodeURIComponent(p.subject)+'&body='+encodeURIComponent(p.msg);
+    var waLink = 'https://wa.me/'+WA+'?text='+encodeURIComponent(p.msg);
+    var vbLink = 'viber://chat?number='+VB;
+    var href = via==='wa'?waLink:(via==='em'?emLink:vbLink);
+    var a = document.createElement('a');
+    a.href = href; if(via!=='vb'){ a.target='_blank'; a.rel='noopener noreferrer'; }
+    document.body.appendChild(a); a.click(); a.remove();
+    if($('p_ok')) $('p_ok').style.display='block';
+  }
+  renderPartnerCities();
+  if($('p_send_wa')) $('p_send_wa').addEventListener('click', function(){ sendPartner('wa'); });
+  if($('p_send_vb')) $('p_send_vb').addEventListener('click', function(){ sendPartner('vb'); });
+  if($('p_send_em')) $('p_send_em').addEventListener('click', function(){ sendPartner('em'); });
+  onServiceChange();
+  renderVehicles();
+  updateSummary();
+  updateCorpTollNotice();
+  updateCorpFields();
+  goToStep(1, {skipScroll:true});
+})();
+</script>
+</body>
+</html>
