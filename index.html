@@ -77,6 +77,16 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.4)}50%{box-shadow:0 0 0 12px rgba(212,175,55,0)}}
 .pulse{animation:pulseGlow 2s infinite}
 
+.svc-slider{position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(212,175,55,.3);margin:0 0 20px;height:280px}
+.svc-slide{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;cursor:pointer}
+.svc-slide.on{opacity:1;z-index:1}
+.svc-slide img{width:100%;height:280px;object-fit:cover;object-position:center top;display:block}
+.svc-dots{position:absolute;bottom:12px;left:0;right:0;z-index:2;display:flex;justify-content:center;gap:8px}
+.svc-dot{width:9px;height:9px;border-radius:50%;border:0;background:rgba(255,255,255,.35);cursor:pointer;padding:0}
+.svc-dot.on{background:var(--gold-light);box-shadow:0 0 8px rgba(212,175,55,.8)}
+@media(min-width:768px){.svc-slider{height:340px}.svc-slide img{height:340px}}
+
+
 .partner-flash{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:linear-gradient(90deg,rgba(212,175,55,.18),rgba(212,175,55,.06),rgba(212,175,55,.18));border-bottom:1px solid rgba(212,175,55,.35);cursor:pointer;animation:corpGlow 2.4s ease-in-out infinite}
 .partner-flash:hover{filter:brightness(1.08)}
 .partner-flash strong{color:var(--gold-light)}
@@ -207,10 +217,10 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       <button type="button" class="ghost-btn px-8 py-3.5 rounded-xl text-base" data-scroll="#services">View Rates &amp; Fleet</button>
     </div>
     <div style="display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:40px">
-      <div><div class="serif" style="font-size:30px;font-weight:700;color:var(--gold-light)" data-count="7">0</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Years Serving</div></div>
-      <div><div class="serif" style="font-size:30px;font-weight:700;color:var(--gold-light)" data-count="3">0</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Vehicle Classes</div></div>
-      <div><div class="serif" style="font-size:30px;font-weight:700;color:var(--gold-light)" data-count="5000">0</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Trips Completed</div></div>
-      <div><div class="serif" style="font-size:30px;font-weight:700;color:var(--gold-light)" data-count="24">0</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Hr Response</div></div>
+      <div><div class="serif" style="font-size:30px;font-weight:700;color:var(--gold-light)" data-count="7">7</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Years Serving</div></div>
+      <div><div class="serif" style="font-size:30px;font-weight:700;color:var(--gold-light)" data-count="3">3</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Vehicle Classes</div></div>
+      <div><div class="serif" style="font-size:30px;font-weight:700;color:var(--gold-light)" data-count="5000">5,000+</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Trips Completed</div></div>
+      <div><div class="serif" style="font-size:30px;font-weight:700;color:var(--gold-light)" data-count="24">24</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Hr Response</div></div>
     </div>
   </div>
 </section>
@@ -231,7 +241,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         <h3 class="serif" style="font-size:22px;font-weight:700;margin:0">Sedan</h3>
         <span class="tag tag-comfort">Sedan · 1–3 pax</span>
       </div>
-      <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">Accent, Mirage or similar · Max 4 pax · 3 large bags</p>
+      <p style="color:var(--muted);font-size:13px;margin:4px 0 8px">Accent, Mirage or similar · Max 4 pax · 3 large bags</p>
       <div style="display:flex;justify-content:space-between;font-size:14px;padding:6px 0"><span style="color:var(--muted)">Loaded rate</span><strong>₱28/km</strong></div>
       <div style="display:flex;justify-content:space-between;font-size:14px;padding:6px 0;color:var(--gold-light)"><span>Base charge</span><strong>₱150 · Min ₱550</strong></div>
       <div style="margin-top:10px;font-size:12px;color:var(--green)">✓ Fuel Included · Professional Driver</div>
@@ -242,7 +252,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         <h3 class="serif" style="font-size:22px;font-weight:700;margin:0">6-Seater</h3>
         <span class="tag tag-comfort">6-Seater · 1–5 pax</span>
       </div>
-      <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">Avanza, Xpander or similar · Max 6 pax · 5 large bags</p>
+      <p style="color:var(--muted);font-size:13px;margin:4px 0 8px">Avanza, Xpander or similar · Max 6 pax · 5 large bags</p>
       <div style="display:flex;justify-content:space-between;font-size:14px;padding:6px 0"><span style="color:var(--muted)">Loaded rate</span><strong>₱34/km</strong></div>
       <div style="display:flex;justify-content:space-between;font-size:14px;padding:6px 0;color:var(--gold-light)"><span>Base charge</span><strong>₱200 · Min ₱700</strong></div>
       <div style="margin-top:10px;font-size:12px;color:var(--green)">✓ Fuel Included · Professional Driver</div>
@@ -253,7 +263,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         <h3 class="serif" style="font-size:22px;font-weight:700;margin:0">SUV</h3>
         <span class="tag tag-premium">SUV · Premium</span>
       </div>
-      <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">Montero or similar SUV · Max 6 pax · spacious cargo</p>
+      <p style="color:var(--muted);font-size:13px;margin:4px 0 8px">Montero or similar SUV · Max 6 pax · spacious cargo</p>
       <div style="display:flex;justify-content:space-between;font-size:14px;padding:6px 0"><span style="color:var(--muted)">Loaded rate</span><strong>₱40/km</strong></div>
       <div style="display:flex;justify-content:space-between;font-size:14px;padding:6px 0;color:var(--gold-light)"><span>Base charge</span><strong>₱250 · Min ₱850</strong></div>
       <div style="margin-top:10px;font-size:12px;color:var(--green)">✓ Fuel Included · Professional Driver</div>
@@ -263,21 +273,27 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
     <span style="font-size:13px;color:var(--muted)">Full-Day &amp; Multi-Day Site Visits — <strong style="color:var(--text)">8 hrs / 100 km per day</strong> · Flat day rate by zone · 2-way toll · Corporate multi-day loyalty</span>
   </div>
+  <div class="svc-slider reveal" id="svcSlider">
+    <div class="svc-slide on" data-service="DAYRENTAL|Full-Day Rental / Site Visit|DAYRENTAL"><img src="https://i.imgur.com/FFXAIo9.jpeg" alt="Full-Day Rental / Site Visit"></div>
+    <div class="svc-slide" data-service="DAYRENTAL_MULTI|Multi-Day Site Visit - Same Route Daily|DAYRENTAL_MULTI"><img src="https://i.imgur.com/4goIJsc.jpeg" alt="Multi-Day Site Visit"></div>
+    <div class="svc-slide" data-service="ROUND_SAMEDAY|Round Trip - Same-Day Return|TRANSFER_ROUND_SAMEDAY"><img src="https://i.imgur.com/iPuV1j2.jpeg" alt="Airport Transfer"></div>
+    <div class="svc-dots" id="svcDots"></div>
+  </div>
   <div class="grid md:grid-cols-3 gap-5">
     <div class="card-el service-card reveal p-6 text-center" data-service="DAYRENTAL|Full-Day Rental / Site Visit|DAYRENTAL">
-      <img src="https://i.imgur.com/ZdGsCdY.jpeg" alt="Day Rental" style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:14px" onerror="this.style.display='none'">
+      <img src="https://i.imgur.com/FFXAIo9.jpeg" alt="Full-Day Rental / Site Visit" style="width:100%;height:200px;object-fit:cover;object-position:center top;border-radius:12px;margin-bottom:14px" onerror="this.style.display='none'">
       <h3 class="serif" style="font-size:24px;font-weight:700;margin:0 0 4px">Full-Day Rental / Site Visit</h3>
       <p style="color:var(--muted);font-size:14px;margin:0 0 10px">Pickup → multiple stops → returned to original pickup point. Corporate accounts welcome.</p>
       <div style="color:var(--gold-light);font-weight:700;font-size:15px">Sedan ₱4,500 · 6-Seater ₱5,500 · SUV ₱6,000 / day</div>
     </div>
     <div class="card-el service-card reveal p-6 text-center" data-service="DAYRENTAL_MULTI|Multi-Day Site Visit - Same Route Daily|DAYRENTAL_MULTI">
-      <img src="https://i.imgur.com/ZdGsCdY.jpeg" alt="Multi-Day Site Visit" style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:14px" onerror="this.style.display='none'">
+      <img src="https://i.imgur.com/4goIJsc.jpeg" alt="Multi-Day Site Visit" style="width:100%;height:200px;object-fit:cover;object-position:center top;border-radius:12px;margin-bottom:14px" onerror="this.style.display='none'">
       <h3 class="serif" style="font-size:24px;font-weight:700;margin:0 0 4px">Multi-Day Site Visit</h3>
       <p style="color:var(--muted);font-size:14px;margin:0 0 10px">Same route over consecutive days (audits, plant visits). Returned to pickup daily. Corporate · 2–7 days.</p>
       <div style="color:var(--gold-light);font-weight:700;font-size:15px">From ₱4,500–₱6,000/day · 5%/8% corporate loyalty</div>
     </div>
     <div class="card-el service-card reveal p-6 text-center" data-service="ROUND_SAMEDAY|Round Trip - Same-Day Return|TRANSFER_ROUND_SAMEDAY">
-      <img src="https://i.imgur.com/BJWSNNF.jpeg" alt="Round Trip" style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:14px" onerror="this.style.display='none'">
+      <img src="https://i.imgur.com/iPuV1j2.jpeg" alt="Airport Round Trip" style="width:100%;height:200px;object-fit:cover;object-position:center top;border-radius:12px;margin-bottom:14px" onerror="this.style.display='none'">
       <h3 class="serif" style="font-size:24px;font-weight:700;margin:0 0 4px">Airport Round Trip</h3>
       <p style="color:var(--muted);font-size:14px;margin:0 0 10px">Same-day or multi-day returns. Corporate accounts get 8% off when you return the same day.</p>
       <div style="color:var(--gold-light);font-weight:700;font-size:15px">Dynamic fare · NAIA &amp; Clark served</div>
@@ -696,12 +712,12 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       <div class="step-label mb-2">Client Stories</div>
       <h2 class="serif" style="font-size:32px;font-weight:700;margin:0">What Our Riders Say</h2>
     </div>
-    <div class="grid md:grid-cols-3 gap-5">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
       <div class="reveal testi-card">
         <div class="stars" style="margin-bottom:10px;font-size:16px">★★★★★</div>
         <p style="font-size:15px;color:var(--text);margin:0 0 14px;line-height:1.7">"Booked a round-trip to NAIA for our family of 5. Driver was 15 minutes early, car was spotless, and he helped with our luggage. Will definitely book again!"</p>
         <div style="font-weight:700;font-size:15px">The Reyes Family</div>
-        <div style="font-size:13px;color:var(--muted)">NAIA Round Trip · Toyota Avanza</div>
+        <div style="font-size:13px;color:var(--muted)">NAIA Round Trip · 6-Seater</div>
       </div>
       <div class="reveal testi-card">
         <div class="stars" style="margin-bottom:10px;font-size:16px">★★★★★</div>
@@ -713,7 +729,31 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         <div class="stars" style="margin-bottom:10px;font-size:16px">★★★★★</div>
         <p style="font-size:15px;color:var(--text);margin:0 0 14px;line-height:1.7">"As a senior traveler, I appreciate the patience and professionalism. They tracked my delayed flight and waited without extra charge. Highly recommended."</p>
         <div style="font-weight:700;font-size:15px">Atty. Ramon Cruz</div>
-        <div style="font-size:13px;color:var(--muted)">NAIA to Cavite · Hyundai Accent</div>
+        <div style="font-size:13px;color:var(--muted)">NAIA to Cavite · Sedan</div>
+      </div>
+      <div class="reveal testi-card">
+        <div class="stars" style="margin-bottom:10px;font-size:16px">★★★★★</div>
+        <p style="font-size:15px;color:var(--text);margin:0 0 14px;line-height:1.7">"We needed the same car for a 4-day plant audit in Laguna. Pickup was on time every morning and they brought us back each night. One invoice for the whole week — accounting loved it."</p>
+        <div style="font-weight:700;font-size:15px">Engr. Paolo Villanueva</div>
+        <div style="font-size:13px;color:var(--muted)">Multi-Day Site Visit · SUV</div>
+      </div>
+      <div class="reveal testi-card">
+        <div class="stars" style="margin-bottom:10px;font-size:16px">★★★★★</div>
+        <p style="font-size:15px;color:var(--text);margin:0 0 14px;line-height:1.7">"3:00 AM Clark departure. Driver messaged the night before with the plate number, arrived early, and the sedan was clean. Easy booking and a fair quote."</p>
+        <div style="font-weight:700;font-size:15px">Kim Dela Peña</div>
+        <div style="font-size:13px;color:var(--muted)">Clark Airport · Sedan</div>
+      </div>
+      <div class="reveal testi-card">
+        <div class="stars" style="margin-bottom:10px;font-size:16px">★★★★★</div>
+        <p style="font-size:15px;color:var(--text);margin:0 0 14px;line-height:1.7">"Alabang to Makati and back the same day for a board meeting. Corporate 8% showed on the estimate. WhatsApp reply was fast and the 6-seater was comfortable for three of us plus bags."</p>
+        <div style="font-weight:700;font-size:15px">Lia Mendoza</div>
+        <div style="font-size:13px;color:var(--muted)">Same-Day Return · 6-Seater</div>
+      </div>
+      <div class="reveal testi-card">
+        <div class="stars" style="margin-bottom:10px;font-size:16px">★★★★★</div>
+        <p style="font-size:15px;color:var(--text);margin:0 0 14px;line-height:1.7">"Booked from Las Piñas for my parents. The driver was respectful, helped them into the car, and sent me a message when they arrived. That peace of mind is why we stay with GoCav."</p>
+        <div style="font-weight:700;font-size:15px">Carlo Bautista</div>
+        <div style="font-size:13px;color:var(--muted)">Family transfer · Sedan</div>
       </div>
     </div>
   </div>
@@ -1956,6 +1996,52 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     document.body.appendChild(a); a.click(); a.remove();
     if($('p_ok')) $('p_ok').style.display='block';
   }
+
+  (function(){
+    var root=$('svcSlider'); if(!root) return;
+    var slides=[].slice.call(root.querySelectorAll('.svc-slide'));
+    var dots=$('svcDots');
+    var i=0, t=null;
+    slides.forEach(function(sl,n){
+      var b=document.createElement('button');
+      b.type='button'; b.className='svc-dot'+(n===0?' on':'');
+      b.addEventListener('click', function(ev){ ev.stopPropagation(); show(n); });
+      dots.appendChild(b);
+    });
+    function show(n){
+      i=(n+slides.length)%slides.length;
+      slides.forEach(function(sl,k){ sl.classList.toggle('on', k===i); });
+      [].forEach.call(dots.children, function(d,k){ d.classList.toggle('on', k===i); });
+      restart();
+    }
+    function restart(){
+      if(t) clearInterval(t);
+      t=setInterval(function(){ show(i+1); }, 4200);
+    }
+    slides.forEach(function(sl){
+      sl.addEventListener('click', function(){
+        var val=sl.getAttribute('data-service');
+        if($('f_service') && val){ $('f_service').value=val; onServiceChange(); renderVehicles(); updateSummary(); }
+        var bk=document.querySelector('#booking');
+        if(bk) bk.scrollIntoView({behavior:'smooth'});
+      });
+    });
+    restart();
+  })();
+
+
+  function updateFleetCounts(){
+    var map={accent:0,avanza:0,montero:0};
+    (PARTNER_UNITS||[]).forEach(function(u){ if(map[u.cls]!=null) map[u.cls]++; });
+    var labels={accent:'Sedan units available', avanza:'6-Seater units available', montero:'SUV units available'};
+    Object.keys(map).forEach(function(k){
+      var el=$('fleetCount-'+k);
+      if(!el) return;
+      var n=map[k];
+      el.textContent = n ? (n+' '+labels[k]) : 'Looking for a unit in this class';
+    });
+  }
+  updateFleetCounts();
   renderPartnerCities();
   if($('p_send_wa')) $('p_send_wa').addEventListener('click', function(){ sendPartner('wa'); });
   if($('p_send_vb')) $('p_send_vb').addEventListener('click', function(){ sendPartner('vb'); });
