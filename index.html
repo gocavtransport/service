@@ -491,6 +491,23 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           <input type="tel" id="f_phone" placeholder="09XX-XXX-XXXX" required>
           <div class="err-msg" id="err_phone">Please enter a valid PH mobile (e.g. 09XX-XXX-XXXX, 11 digits).</div>
         </div>
+        <div id="corpCompanyFields" style="display:none;margin-top:16px;padding:16px;border-radius:12px;border:1px solid rgba(212,175,55,.35);background:rgba(212,175,55,.06)">
+          <p style="font-weight:700;font-size:14px;color:var(--gold-light);margin:0 0 12px;letter-spacing:.04em;text-transform:uppercase">Company billing details</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="f_company" class="block mb-1.5 font-semibold" style="font-size:15px">Company Name</label>
+              <input type="text" id="f_company" placeholder="e.g. ABC Manufacturing Inc.">
+            </div>
+            <div>
+              <label for="f_bill_email" class="block mb-1.5 font-semibold" style="font-size:15px">Billing Email</label>
+              <input type="email" id="f_bill_email" placeholder="accounts@company.com">
+            </div>
+          </div>
+          <div class="mt-4">
+            <label for="f_tin" class="block mb-1.5 font-semibold" style="font-size:15px">TIN <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+            <input type="text" id="f_tin" placeholder="e.g. 000-000-000-000">
+          </div>
+        </div>
         <div class="mt-5">
           <label class="block mb-2 font-semibold" style="font-size:15px">Send Booking Via <span style="color:var(--red)">*</span></label>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -508,10 +525,14 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
             </div>
           </div>
         </div>
-        <div style="margin-top:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="margin-top:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
           <button type="button" class="ghost-btn px-6 py-3.5 rounded-xl" id="backStep2">← Back</button>
-          <button type="submit" class="gold-btn px-8 py-3.5 rounded-xl" id="submitBtn">Confirm &amp; Send Booking</button>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button type="button" class="ghost-btn px-6 py-3.5 rounded-xl" id="quoteBtn">Request Quotation Only</button>
+            <button type="submit" class="gold-btn px-8 py-3.5 rounded-xl" id="submitBtn">Confirm &amp; Send Booking</button>
+          </div>
         </div>
+        <p style="font-size:12px;color:var(--muted);margin:10px 0 0;text-align:right">Quotation only = PDF estimate, no dispatch yet. Confirm &amp; Send = booking request.</p>
       </div>
       </form>
     </div>
@@ -680,6 +701,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     <div class="faq-item"><div class="faq-q">What is Multi-Day Site Visit?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">For corporate clients who need the same route over consecutive days (e.g. audits or plant visits). Each day is a full-day package (8 hrs / 100 km), and the client is returned to the original pickup point every day. Book 2–7 days. Corporate loyalty: 5% off day rates for 2 days, 8% for 3–7 days. Two-way toll × number of days is estimated; excess km/hours billed if you exceed the daily package. Same driver/vehicle preferred subject to availability.</div></div>
     <div class="faq-item"><div class="faq-q">Are toll fees and parking included?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Fuel is included. Toll fees are estimated in your live quote and charged at actual cost. For full-day and multi-day site visits, toll is estimated two-way (and × days for multi-day). Parking is paid by the client at actual cost. Both are shown as separate line items in your estimate and PDF quotation.</div></div>
     <div class="faq-item"><div class="faq-q">What if my flight is delayed?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">No problem. Include your flight number and we monitor arrival times. We wait for delayed flights at no extra charge within reasonable windows.</div></div>
+    <div class="faq-item"><div class="faq-q">What about waiting time and flight delays?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Airport pickups: 45 minutes free waiting from the time we notify you that the driver is on stand. Extra waiting is billed per 30 minutes. If you give a flight number, we track the flight and adjust pickup for delays at no extra charge within a reasonable window. Full-day / site visit: 8 hours included; time beyond that is billed at the vehicle excess-hour rate. Night trips (22:00–06:00) have a +12% surcharge.</div></div>
     <div class="faq-item"><div class="faq-q">What is your cancellation policy?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Free cancellation up to 24 hours before pickup. 12–24 hours before: 25% of estimated fare (minimum ₱500). Less than 12 hours or no-show: 50%–100% of estimated fare. Multi-day corporate site visits: free cancel of the whole block until 24 hours before Day 1; after Day 1 starts, unused later days can be dropped free if you notify us before 8:00 PM the evening before (otherwise 50% of that day may apply). Reschedules with 12+ hours notice are usually free once. Flight delays with a given flight number are monitored at no extra charge within reasonable windows. Contact us via WhatsApp or Viber for the fastest response.</div></div>
   </div>
 </section>
@@ -1004,7 +1026,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           doc.text('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite', textLeft, 68);
           doc.text('Non-VAT Reg. 940-158-988-0000', textLeft, 82);
           doc.setFont('helvetica','bold'); doc.setFontSize(11);
-          doc.text('QUOTATION', W-40, 28, {align:'right'});
+          doc.text(b.intent==='quote' ? 'QUOTATION' : 'QUOTATION / BOOKING', W-40, 28, {align:'right'});
           doc.setFont('helvetica','normal'); doc.setFontSize(9);
           doc.text('Ref: '+b.ref, W-40, 44, {align:'right'});
           doc.text('Date: '+b.date, W-40, 58, {align:'right'});
@@ -1016,6 +1038,9 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           doc.text('Name: '+b.name, 40, y); y+=15;
           doc.text('Email: '+b.email, 40, y); y+=15;
           doc.text('Phone: '+b.phone, 40, y); y+=15;
+          if(b.company){ doc.text('Company: '+b.company, 40, y); y+=15; }
+          if(b.billEmail){ doc.text('Billing email: '+b.billEmail, 40, y); y+=15; }
+          if(b.tin){ doc.text('TIN: '+b.tin, 40, y); y+=15; }
           doc.text('Account: '+(b.corporate?'Corporate (loyalty rates & invoicing)':'Standard'), 40, y); y+=22;
           doc.setFont('helvetica','bold'); doc.setFontSize(12);
           doc.text('Trip Details', 40, y); y+=18;
@@ -1073,6 +1098,9 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
             doc.text('Fuel included. Toll & parking at actual cost. Night surcharge +12% (22:00-06:00). Quotation valid 48 hrs.', 40, y);
           }
           y+=12;
+          doc.text('Driver and plate number are confirmed on Viber or WhatsApp the day before pickup.', 40, y); y+=11;
+          doc.text('Airport waiting: 45 minutes free after driver-on-stand notice. Extra wait billed per 30 min. Flight number tracked at no extra charge within a reasonable window.', 40, y); y+=11;
+          doc.text('Full-day includes 8 hours; extra time billed at the vehicle excess-hour rate.', 40, y); y+=11;
           doc.text('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite', 40, y); y+=11;
           doc.text('Cancellation: free up to 24h before pickup. See FAQ for full policy.', 40, y);
           doc.save('GoCav-Quotation-'+b.ref+'.pdf');
@@ -1209,6 +1237,10 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     computeFare();
   }
   $('f_service').addEventListener('change', function(){ showErr('service',false); onServiceChange(); renderVehicles(); updateSummary(); });
+  function updateCorpFields(){
+    var box = $('corpCompanyFields');
+    if(box) box.style.display = state.corporate ? 'block' : 'none';
+  }
   function updateCorpTollNotice(){
     // Show for all service types once a service is selected
     var on = !!($('f_service') && $('f_service').value);
@@ -1216,7 +1248,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     if(a) a.classList.toggle('show', on);
     if(b) b.classList.toggle('show', on);
   }
-  $('f_corporate').addEventListener('change', function(){ state.corporate = this.checked; computeFare(); updateSummary(); updateCorpTollNotice(); });
+  $('f_corporate').addEventListener('change', function(){ state.corporate = this.checked; computeFare(); updateSummary(); updateCorpTollNotice(); updateCorpFields(); });
   function renderVehicles(){
     var pax = parseInt($('f_pax').value)||0, bags = parseInt($('f_luggage').value)||0;
     var container = $('vehicleOptions');
@@ -1378,7 +1410,15 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         email: $('f_email').value.trim() || old.email || '',
         phone: $('f_phone').value.trim() || old.phone || '',
         payment: $('f_payment').value || old.payment || '',
-        corporate: state.corporate
+        corporate: state.corporate,
+        company: ($('f_company') && $('f_company').value.trim()) || old.company || '',
+        billEmail: ($('f_bill_email') && $('f_bill_email').value.trim()) || old.billEmail || '',
+        tin: ($('f_tin') && $('f_tin').value.trim()) || old.tin || '',
+        service: $('f_service').value || old.service || '',
+        pickup: $('f_pickup').value.trim() || old.pickup || '',
+        dropoff: $('f_dropoff').value.trim() || old.dropoff || '',
+        pax: $('f_pax').value || old.pax || '',
+        luggage: $('f_luggage').value || old.luggage || ''
       };
       localStorage.setItem('gocav_profile', JSON.stringify(d));
     } catch(e){}
@@ -1391,11 +1431,31 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       if(d.phone) $('f_phone').value = d.phone;
       if(d.payment) $('f_payment').value = d.payment;
       if(d.corporate){ $('f_corporate').checked = true; state.corporate = true; }
+      if(d.company && $('f_company')) $('f_company').value = d.company;
+      if(d.billEmail && $('f_bill_email')) $('f_bill_email').value = d.billEmail;
+      if(d.tin && $('f_tin')) $('f_tin').value = d.tin;
+      if(d.service && $('f_service') && !$('f_service').value) $('f_service').value = d.service;
+      if(d.pickup && $('f_pickup') && !$('f_pickup').value) $('f_pickup').value = d.pickup;
+      if(d.dropoff && $('f_dropoff') && !$('f_dropoff').value) $('f_dropoff').value = d.dropoff;
+      if(d.pax && $('f_pax') && !$('f_pax').value) $('f_pax').value = d.pax;
+      if(d.luggage && $('f_luggage') && ($('f_luggage').value==='' || $('f_luggage').value==='0')) $('f_luggage').value = d.luggage;
+      updateCorpFields();
     } catch(e){}
   }
   loadLocal();
+    if($('submitBtn')){
+    $('submitBtn').addEventListener('click', function(){ state.intent = 'book'; });
+  }
+    if($('quoteBtn')){
+    $('quoteBtn').addEventListener('click', function(){
+      state.intent = 'quote';
+      if($('bkForm').requestSubmit) $('bkForm').requestSubmit();
+      else $('bkForm').dispatchEvent(new Event('submit', {cancelable:true, bubbles:true}));
+    });
+  }
   $('bkForm').addEventListener('submit', function(e){
     e.preventDefault();
+    if(!state.intent) state.intent = 'book';
     var ok = true;
     if(!$('f_name').value.trim()){ showErr('name',true); ok=false; } else showErr('name',false);
     var em = $('f_email').value.trim();
@@ -1438,12 +1498,22 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     } else if(state.lastFare && state.lastFare.dayRental){
       fareDetail += '  Note: 8 hrs / 100 km included; 2-way toll & parking charged at actual cost.\n';
     }
+    var intent = state.intent || 'book';
     var corpLine = state.corporate ? 'Account: CORPORATE (loyalty rates & consolidated invoicing)\n' : '';
-    var msg = 'NEW BOOKING — REF: '+ref+'\n' +
+    var company = ($('f_company') && $('f_company').value.trim()) || '';
+    var billEmail = ($('f_bill_email') && $('f_bill_email').value.trim()) || '';
+    var tin = ($('f_tin') && $('f_tin').value.trim()) || '';
+    var companyBlock = '';
+    if(company) companyBlock += 'Company: '+company+'\n';
+    if(billEmail) companyBlock += 'Billing email: '+billEmail+'\n';
+    if(tin) companyBlock += 'TIN: '+tin+'\n';
+    var msgHead = (intent==='quote') ? 'QUOTATION REQUEST — REF: '+ref : 'NEW BOOKING — REF: '+ref;
+    var msg = msgHead+'\n' +
       '══════════════════════\n' + corpLine +
       'Client: '+$('f_name').value.trim()+'\n' +
       'Email: '+em+'\n' +
       'Phone: '+$('f_phone').value.trim()+'\n' +
+      companyBlock +
       'Passengers: '+$('f_pax').value+' · Bags: '+($('f_luggage').value||'0')+'\n' +
       'Vehicle: '+vname+'\n' +
       'Rate: '+rateText+'\n' +
@@ -1460,13 +1530,15 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       'Sent via: '+state.sendMethod+'\n' +
       '══════════════════════\n' +
       'GoCav Transport Services\n0976-046-5134 / 0995-435-5514\ngocav.transport@gmail.com';
-    var subject = 'Booking '+ref+' — '+$('f_name').value.trim();
+    var subject = (intent==='quote'?'Quotation ':'Booking ')+ref+' — '+$('f_name').value.trim();
     var emLink = 'mailto:'+EM+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(msg);
     var waLink = 'https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     var vbLink = 'viber://chat?number='+VB;
     state.lastBooking = {
       ref: ref, date: new Date().toLocaleDateString('en-PH'),
       name: $('f_name').value.trim(), email: em, phone: $('f_phone').value.trim(),
+      company: company, billEmail: billEmail, tin: tin,
+      intent: intent,
       corporate: state.corporate,
       service: svcName, vehicle: vname,
       datetime: $('f_date').value+' '+$('f_time').value,
@@ -1481,9 +1553,13 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       fareLines: fareLinesArr, fareTotal: fareTotalNum
     };
     $('refNo').textContent = ref;
-    $('followUpNote').textContent = state.corporate
-      ? 'Corporate booking received — expect consolidated invoicing. Tap below to download your branded PDF quotation.'
-      : 'Thank you! Tap below to download your branded PDF quotation.';
+    if(intent==='quote'){
+      $('followUpNote').textContent = 'Quotation request received — this is not a dispatch yet. Download the PDF and send proof only after you confirm the trip.';
+    } else if(state.corporate){
+      $('followUpNote').textContent = 'Corporate booking received — expect consolidated invoicing. Driver and plate will be sent on Viber/WhatsApp the day before. Tap below for your PDF.';
+    } else {
+      $('followUpNote').textContent = 'Thank you! Driver and plate will be confirmed on Viber/WhatsApp the day before pickup. Tap below to download your PDF.';
+    }
     $('resendEm').href = emLink;
     $('resendWa').href = waLink;
     $('resendVb').href = vbLink;
@@ -1518,7 +1594,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     $('successScreen').style.display='none';
     $('booking').style.display='block';
     $('bkForm').reset();
-    state.selectedVehicle=null; state.sendMethod='Email'; state.step=1; state.lastFare=null; state.lastBooking=null; state.corporate=false;
+    state.selectedVehicle=null; state.sendMethod='Email'; state.step=1; state.lastFare=null; state.lastBooking=null; state.corporate=false; state.intent='book';
     document.querySelectorAll('.send-opt').forEach(function(o,i){ o.classList.toggle('selected', i===0); });
     document.querySelectorAll('.service-card').forEach(function(c){ c.classList.remove('selected'); });
     $('vehicleOptions').innerHTML='';
@@ -1529,8 +1605,10 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     $('booking').scrollIntoView({behavior:'smooth'});
   });
   onServiceChange();
+  renderVehicles();
   updateSummary();
   updateCorpTollNotice();
+  updateCorpFields();
   goToStep(1, {skipScroll:true});
 })();
 </script>
