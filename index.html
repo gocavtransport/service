@@ -814,6 +814,9 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 <script>
 (function(){
   var WA = "639760465134", VB = "639760465134", EM = "gocav.transport@gmail.com";
+  // Paste your Google Apps Script web-app URL after you deploy (see gocav-sheet-setup.txt)
+  var SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyYelYIWs2iFb6Xh5i5IcqbEJ9jlv_75OmkTgf1oZ9BQSItBs7WGDLDmXPW6SXiaFtLrQ/exec";
+  var SHEET_TOKEN = "gocav-2026";
   // VEHICLE TIERS — rates cover fuel, driver allowance, maintenance, insurance, depreciation.
   var VEHICLES = {
     accent:  { name:'Sedan',      tier:'Sedan',     maxPax:4, comfortPax:3, maxBags:3, comfortBags:2, base:150, perKm:28, repositionKm:14, minFare:550, naiaFee:150, clarkFee:350, homeDiscount:200, dayExcessKm:20, dayExcessHr:450 },
@@ -878,6 +881,19 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     if('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
   } catch(e){}
+
+  function postBookingToSheet(row){
+    if(!SHEET_WEBAPP_URL) return;
+    try {
+      row.token = SHEET_TOKEN;
+      fetch(SHEET_WEBAPP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(row)
+      }).catch(function(){});
+    } catch(e){}
+  }
   var $ = function(id){ return document.getElementById(id); };
   function showErr(id, show){
     var el = $('f_'+id) || $(id);
@@ -1670,6 +1686,37 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     } else {
       $('followUpNote').textContent = 'Thank you! Driver and plate will be confirmed on Viber/WhatsApp the day before pickup. Tap below to download your PDF.';
     }
+    postBookingToSheet({
+      timestamp: new Date().toISOString(),
+      ref: ref,
+      type: intent==='quote' ? 'Quotation' : 'Booking',
+      service: svcName,
+      vehicle: vname,
+      pickup: $('f_pickup').value.trim(),
+      dropoff: $('f_dropoff').value.trim(),
+      date: $('f_date').value,
+      time: $('f_time').value,
+      days: (state.lastFare && state.lastFare.days) ? state.lastFare.days : '',
+      pax: $('f_pax').value,
+      bags: $('f_luggage').value||'0',
+      flight: flight,
+      fare: fareTotalNum || '',
+      corporate: state.corporate ? 'Yes' : 'No',
+      company: company,
+      billEmail: billEmail,
+      tin: tin,
+      name: $('f_name').value.trim(),
+      phone: $('f_phone').value.trim(),
+      email: em,
+      payment: $('f_payment').value,
+      terms: getPayTerms(svcType, state.corporate),
+      partner: partnerDispatchLine(),
+      preferred: ($('f_pref_partner') && $('f_pref_partner').selectedIndex>0) ? $('f_pref_partner').options[$('f_pref_partner').selectedIndex].text : '',
+      channel: state.sendMethod,
+      notes: $('f_notes').value.trim(),
+      gocav20: fareTotalNum ? Math.round(fareTotalNum*0.20) : '',
+      partner80: fareTotalNum ? Math.round(fareTotalNum*0.80) : ''
+    });
     $('resendEm').href = emLink;
     $('resendWa').href = waLink;
     $('resendVb').href = vbLink;
