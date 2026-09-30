@@ -886,11 +886,20 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     if(!SHEET_WEBAPP_URL) return;
     try {
       row.token = SHEET_TOKEN;
+      var payload = JSON.stringify(row);
+      var url = SHEET_WEBAPP_URL + '?data=' + encodeURIComponent(payload);
+      var img = new Image();
+      img.src = url;
+      var ifr = document.createElement('iframe');
+      ifr.style.display = 'none';
+      ifr.src = url;
+      document.body.appendChild(ifr);
+      setTimeout(function(){ try { ifr.remove(); } catch(e){} }, 8000);
       fetch(SHEET_WEBAPP_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(row)
+        body: payload
       }).catch(function(){});
     } catch(e){}
   }
