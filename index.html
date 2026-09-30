@@ -76,6 +76,16 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 @keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:.8}90%{opacity:.4}100%{transform:translateY(-320px) translateX(30px);opacity:0}}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.4)}50%{box-shadow:0 0 0 12px rgba(212,175,55,0)}}
 .pulse{animation:pulseGlow 2s infinite}
+
+.partner-flash{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:linear-gradient(90deg,rgba(212,175,55,.18),rgba(212,175,55,.06),rgba(212,175,55,.18));border-bottom:1px solid rgba(212,175,55,.35);cursor:pointer;animation:corpGlow 2.4s ease-in-out infinite}
+.partner-flash:hover{filter:brightness(1.08)}
+.partner-flash strong{color:var(--gold-light)}
+.city-slot{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card2)}
+.city-slot.open{border-color:rgba(52,211,153,.35)}
+.city-slot.full{border-color:var(--border);opacity:.65}
+.city-slot .city-name{font-weight:700;font-size:14px}
+.city-slot .city-meta{font-size:12px;color:var(--muted);margin-top:4px}
+
 .summary-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dotted var(--border);font-size:14px}
 .summary-row:last-child{border-bottom:none}
 .summary-label{color:var(--muted)}
@@ -161,12 +171,19 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       <a class="nav-link" data-scroll="#services">Services</a>
       <a class="nav-link" data-scroll="#corporate">Corporate</a>
       <a class="nav-link" data-scroll="#booking">Book Now</a>
+      <a class="nav-link" data-scroll="#partners">Partners</a>
       <a class="nav-link" data-scroll="#faq">FAQ</a>
       <button type="button" class="gold-btn px-5 py-2.5 rounded-lg text-sm" data-scroll="#booking">Reserve a Ride</button>
     </div>
     <button type="button" class="gold-btn px-4 py-2.5 rounded-lg text-sm md:hidden" data-scroll="#booking">Book</button>
   </div>
 </nav>
+
+<div class="partner-flash" data-scroll="#partners" role="link">
+  <span style="width:8px;height:8px;border-radius:50%;background:var(--gold-light);display:inline-block" class="pulse"></span>
+  <span style="font-size:13px;color:var(--text)">Open for <strong>driver partnership</strong> — we need about 2 units per city in NCR and nearby areas. <strong style="text-decoration:underline">See open cities →</strong></span>
+</div>
+
 <section style="position:relative;overflow:hidden;padding:80px 24px 60px;text-align:center">
   <div class="hero-glow" style="width:400px;height:400px;background:var(--gold);top:-100px;left:10%"></div>
   <div class="hero-glow" style="width:300px;height:300px;background:var(--teal);bottom:-80px;right:10%;opacity:.3"></div>
@@ -705,6 +722,74 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     <div class="faq-item"><div class="faq-q">What is your cancellation policy?<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a">Free cancellation up to 24 hours before pickup. 12–24 hours before: 25% of estimated fare (minimum ₱500). Less than 12 hours or no-show: 50%–100% of estimated fare. Multi-day corporate site visits: free cancel of the whole block until 24 hours before Day 1; after Day 1 starts, unused later days can be dropped free if you notify us before 8:00 PM the evening before (otherwise 50% of that day may apply). Reschedules with 12+ hours notice are usually free once. Flight delays with a given flight number are monitored at no extra charge within reasonable windows. Contact us via WhatsApp or Viber for the fastest response.</div></div>
   </div>
 </section>
+
+<section id="partners" class="max-w-6xl mx-auto px-5 py-16">
+  <div class="reveal text-center mb-8">
+    <div class="step-label mb-2">Drive with GoCav</div>
+    <h2 class="serif" style="font-size:32px;font-weight:700;margin:0 0 8px">Driver Partnership</h2>
+    <p style="color:var(--muted);font-size:15px;max-width:640px;margin:0 auto">We keep about <strong style="color:var(--text)">2 partner units per city</strong> (or a nearby city) across NCR and adjoining Cavite / Laguna. Apply only where a slot is still open. Clean unit, valid papers, and a professional chauffeur required.</p>
+  </div>
+  <div id="partnerCityGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-10"></div>
+  <div class="card-el p-6 md:p-8 reveal">
+    <h3 class="serif" style="font-size:24px;font-weight:700;margin:0 0 6px">Partner application</h3>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 18px">Tell us your unit and base city. We will reply on WhatsApp or Viber.</p>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label for="p_name" class="block mb-1.5 font-semibold" style="font-size:15px">Full Name <span style="color:var(--red)">*</span></label>
+        <input type="text" id="p_name" placeholder="Your name">
+        <div class="err-msg" id="err_pname">Please enter your name.</div>
+      </div>
+      <div>
+        <label for="p_phone" class="block mb-1.5 font-semibold" style="font-size:15px">Mobile <span style="color:var(--red)">*</span></label>
+        <input type="tel" id="p_phone" placeholder="09XX-XXX-XXXX">
+        <div class="err-msg" id="err_pphone">Please enter a valid 11-digit mobile.</div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4 mt-4">
+      <div>
+        <label for="p_city" class="block mb-1.5 font-semibold" style="font-size:15px">Base city <span style="color:var(--red)">*</span></label>
+        <select id="p_city"><option value="">— Select open city —</option></select>
+        <div class="err-msg" id="err_pcity">Please choose an open city.</div>
+      </div>
+      <div>
+        <label for="p_vehicle" class="block mb-1.5 font-semibold" style="font-size:15px">Vehicle <span style="color:var(--red)">*</span></label>
+        <select id="p_vehicle">
+          <option value="">— Select —</option>
+          <option>Hyundai Accent / similar sedan</option>
+          <option>Toyota Avanza / similar 6-seater</option>
+          <option>Montero / Fortuner / similar SUV</option>
+          <option>Other (describe in notes)</option>
+        </select>
+        <div class="err-msg" id="err_pvehicle">Please select your vehicle type.</div>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mt-4">
+      <div>
+        <label for="p_year" class="block mb-1.5 font-semibold" style="font-size:15px">Year model</label>
+        <input type="number" id="p_year" min="2008" max="2026" placeholder="e.g. 2018">
+      </div>
+      <div>
+        <label for="p_plate" class="block mb-1.5 font-semibold" style="font-size:15px">Plate no. <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+        <input type="text" id="p_plate" placeholder="ABC 1234">
+      </div>
+    </div>
+    <label class="corp-box" style="margin-top:16px">
+      <input type="checkbox" id="p_with_driver" checked>
+      <span>I will drive the unit myself (chauffeur + car)</span>
+    </label>
+    <div class="mt-4">
+      <label for="p_notes" class="block mb-1.5 font-semibold" style="font-size:15px">Notes</label>
+      <textarea id="p_notes" rows="3" placeholder="Other cities you can cover, availability, airport or full-day preferred…"></textarea>
+    </div>
+    <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap">
+      <button type="button" class="gold-btn px-6 py-3 rounded-xl" id="p_send_wa">Send via WhatsApp</button>
+      <button type="button" class="ghost-btn px-6 py-3 rounded-xl" id="p_send_vb">Viber</button>
+      <button type="button" class="ghost-btn px-6 py-3 rounded-xl" id="p_send_em">Email</button>
+    </div>
+    <p id="p_ok" style="display:none;margin-top:12px;color:var(--green);font-size:14px">Application ready — send the message that opened, then wait for our reply.</p>
+  </div>
+</section>
+
 <footer style="border-top:1px solid var(--border);padding:40px 24px;text-align:center">
   <div class="max-w-4xl mx-auto">
     <img src="https://i.imgur.com/DWfEGWv.png" alt="GoCav" style="height:56px;border-radius:10px;margin:0 auto 16px" onerror="this.style.display='none'">
@@ -1088,60 +1173,31 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
             doc.text(termsLines, 40, y);
             y += termsLines.length * 12 + 4;
           }
-          var accLine = doc.splitTextToSize('Account Name: Tuhamie A. Dimanang · GCash/Maya: 0995-435-5514 · BPI: 0489-7200-78 · BDO: 0048 2022 1372', W-80);
-          doc.text(accLine, 40, y);
-          y += accLine.length * 12 + 8;
-          doc.setFontSize(8);
-          function writeJustified(text, x, yPos, maxW, lineH){
-            var words = String(text||'').split(/\s+/).filter(Boolean);
-            var lines = [];
-            var cur = [];
-            function widthOf(arr){
-              var w = 0;
-              arr.forEach(function(wd,i){ w += doc.getTextWidth(wd) + (i<arr.length-1?doc.getTextWidth(' '):0); });
-              return w;
-            }
-            words.forEach(function(wd){
-              var trial = cur.concat([wd]);
-              if(cur.length && widthOf(trial) > maxW){ lines.push(cur); cur = [wd]; }
-              else cur = trial;
-            });
-            if(cur.length) lines.push(cur);
-            lines.forEach(function(arr, idx){
-              var isLast = idx === lines.length-1;
-              if(isLast || arr.length===1){
-                doc.text(arr.join(' '), x, yPos);
-              } else {
-                var wordW = 0;
-                arr.forEach(function(wd){ wordW += doc.getTextWidth(wd); });
-                var gap = (maxW - wordW) / (arr.length-1);
-                var cx = x;
-                arr.forEach(function(wd){
-                  doc.text(wd, cx, yPos);
-                  cx += doc.getTextWidth(wd) + gap;
-                });
-              }
-              yPos += lineH;
-            });
-            return yPos;
-          }
-          var notes = [];
+          doc.setFontSize(8.5);
+          var footNotes = [];
+          footNotes.push('Account Name: Tuhamie A. Dimanang  |  GCash/Maya: 0995-435-5514  |  BPI: 0489-7200-78  |  BDO: 0048 2022 1372');
           if(b.dayRentalMulti){
-            notes.push('Multi-day site visit includes 8 hours and 100 km per day. The client is returned to pickup each day. Two-way toll and parking are billed at actual cost. This quotation is valid for 48 hours.');
+            footNotes.push('Multi-day site visit: 8 hrs / 100 km per day, returned to pickup daily. 2-way toll and parking at actual cost. Valid 48 hours.');
           } else if(b.dayRental){
-            notes.push('Full-day rate includes 8 hours and 100 km, fuel, and driver. The client is returned to pickup. Two-way toll and parking are billed at actual cost. This quotation is valid for 48 hours.');
+            footNotes.push('Full-day: 8 hrs / 100 km, fuel and driver included. Client returned to pickup. 2-way toll and parking at actual cost. Valid 48 hours.');
           } else {
-            notes.push('Fuel is included. Toll and parking are billed at actual cost. Night trips from 22:00 to 06:00 have a 12% surcharge. This quotation is valid for 48 hours.');
+            footNotes.push('Fuel included. Toll and parking at actual cost. Night surcharge +12% (22:00-06:00). Valid 48 hours.');
           }
-          notes.push('The assigned driver and plate number are confirmed on Viber or WhatsApp the day before pickup.');
-          notes.push('Airport waiting: 45 minutes free after we notify you that the driver is on stand. Extra waiting is billed every 30 minutes. If a flight number is given, delays are tracked at no extra charge within a reasonable window.');
-          notes.push('Full-day and site-visit service includes 8 hours. Time beyond that is billed at the vehicle excess-hour rate.');
-          notes.push('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite.');
-          notes.push('Cancellation is free up to 24 hours before pickup. See the website FAQ for the full policy.');
-          notes.forEach(function(n){
-            y = writeJustified(n, 40, y, W-80, 11) + 4;
+          footNotes.push('Driver and plate number will be sent on Viber or WhatsApp the day before pickup.');
+          if(b.flight || (b.svcType && String(b.svcType).indexOf('TRANSFER')===0)){
+            footNotes.push('Airport wait: 45 minutes free after driver-on-stand notice. Extra wait billed per 30 minutes. Flight numbers are tracked at no extra charge within a reasonable window.');
+          }
+          if(b.dayRental || b.dayRentalMulti){
+            footNotes.push('Full-day includes 8 hours. Extra time is billed at the vehicle excess-hour rate.');
+          }
+          footNotes.push('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite');
+          footNotes.push('Cancellation: free up to 24 hours before pickup. See FAQ for the full policy.');
+          footNotes.forEach(function(line){
+            var wrapped = doc.splitTextToSize(line, W-80);
+            doc.text(wrapped, 40, y);
+            y += wrapped.length * 11 + 3;
           });
-          doc.save('GoCav-Quotation-'+b.ref+'.pdf');
+                    doc.save('GoCav-Quotation-'+b.ref+'.pdf');
         } catch(e){ alert('PDF generation needs an internet connection to load. Please try again.'); }
       }
       // Load logo then build PDF (fallback without logo if image blocked)
@@ -1642,6 +1698,81 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     onServiceChange(); updateSummary(); goToStep(1);
     $('booking').scrollIntoView({behavior:'smooth'});
   });
+
+  var PARTNER_CITIES = [
+    { name:'Manila', filled:0 }, { name:'Makati', filled:0 }, { name:'Taguig / BGC', filled:0 },
+    { name:'Pasay / NAIA', filled:0 }, { name:'Parañaque', filled:0 }, { name:'Las Piñas', filled:2 },
+    { name:'Muntinlupa', filled:1 }, { name:'Pasig', filled:0 }, { name:'Mandaluyong', filled:0 },
+    { name:'San Juan', filled:0 }, { name:'Quezon City', filled:0 }, { name:'Marikina', filled:0 },
+    { name:'Caloocan', filled:0 }, { name:'Valenzuela', filled:0 }, { name:'Malabon', filled:0 },
+    { name:'Navotas', filled:0 }, { name:'Pateros', filled:0 },
+    { name:'General Trias', filled:2 }, { name:'Dasmariñas', filled:2 }, { name:'Imus', filled:2 },
+    { name:'Bacoor', filled:2 }, { name:'Carmona', filled:2 },
+    { name:'Santa Rosa', filled:0 }, { name:'Biñan', filled:0 }, { name:'San Pedro', filled:0 },
+    { name:'Cabuyao', filled:0 }, { name:'Calamba', filled:0 }
+  ];
+  var PARTNER_SLOTS = 2;
+  function renderPartnerCities(){
+    var grid = $('partnerCityGrid'), sel = $('p_city');
+    if(!grid || !sel) return;
+    grid.innerHTML = '';
+    sel.innerHTML = '<option value="">— Select open city —</option>';
+    PARTNER_CITIES.forEach(function(c){
+      var open = (c.filled||0) < PARTNER_SLOTS;
+      var left = Math.max(0, PARTNER_SLOTS - (c.filled||0));
+      var card = document.createElement('div');
+      card.className = 'city-slot '+(open?'open':'full');
+      card.innerHTML = '<div class="city-name">'+c.name+'</div><div class="city-meta">'+(open ? ('Open — '+left+' of '+PARTNER_SLOTS+' slots') : 'Full — nearby city only')+'</div>';
+      grid.appendChild(card);
+      if(open){
+        var opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = c.name+' ('+left+' slot'+(left===1?'':'s')+' left)';
+        sel.appendChild(opt);
+      }
+    });
+  }
+  function showPErr(id, on){ var el=$('err_'+id); if(el) el.classList.toggle('show', !!on); }
+  function partnerPayload(){
+    var name = ($('p_name').value||'').trim();
+    var phone = ($('p_phone').value||'').replace(/\D/g,'');
+    if(phone.length===12 && phone.indexOf('63')===0) phone = '0'+phone.slice(2);
+    if(phone.length===10 && phone.charAt(0)==='9') phone = '0'+phone;
+    var city = $('p_city').value;
+    var veh = $('p_vehicle').value;
+    var ok = true;
+    showPErr('pname', !name); if(!name) ok=false;
+    showPErr('pphone', phone.length<11); if(phone.length<11) ok=false;
+    showPErr('pcity', !city); if(!city) ok=false;
+    showPErr('pvehicle', !veh); if(!veh) ok=false;
+    if(!ok) return null;
+    var msg = 'DRIVER PARTNER APPLICATION\n══════════════════════\n'+
+      'Name: '+name+'\n'+
+      'Mobile: '+$('p_phone').value.trim()+'\n'+
+      'Base city: '+city+'\n'+
+      'Vehicle: '+veh+'\n'+
+      'Year: '+($('p_year').value||'Not given')+'\n'+
+      'Plate: '+($('p_plate').value.trim()||'Not given')+'\n'+
+      'Drives own unit: '+($('p_with_driver').checked?'Yes':'No')+'\n'+
+      'Notes: '+($('p_notes').value.trim()||'None')+'\n'+
+      '══════════════════════\nGoCav Transport Services';
+    return { msg: msg, subject: 'Driver partner — '+name+' — '+city };
+  }
+  function sendPartner(via){
+    var p = partnerPayload(); if(!p) return;
+    var emLink = 'mailto:'+EM+'?subject='+encodeURIComponent(p.subject)+'&body='+encodeURIComponent(p.msg);
+    var waLink = 'https://wa.me/'+WA+'?text='+encodeURIComponent(p.msg);
+    var vbLink = 'viber://chat?number='+VB;
+    var href = via==='wa'?waLink:(via==='em'?emLink:vbLink);
+    var a = document.createElement('a');
+    a.href = href; if(via!=='vb'){ a.target='_blank'; a.rel='noopener noreferrer'; }
+    document.body.appendChild(a); a.click(); a.remove();
+    if($('p_ok')) $('p_ok').style.display='block';
+  }
+  renderPartnerCities();
+  if($('p_send_wa')) $('p_send_wa').addEventListener('click', function(){ sendPartner('wa'); });
+  if($('p_send_vb')) $('p_send_vb').addEventListener('click', function(){ sendPartner('vb'); });
+  if($('p_send_em')) $('p_send_em').addEventListener('click', function(){ sendPartner('em'); });
   onServiceChange();
   renderVehicles();
   updateSummary();
