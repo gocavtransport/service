@@ -717,6 +717,12 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   ];
   var BASE_KEYWORDS = ['general trias','gen trias','gentri','le rica'];
   var state = { step:1, sendMethod:'Email', selectedVehicle:null, lastFare:null, lastBooking:null, corporate:false };
+  // Stay at top of page on first visit (do not auto-jump to #booking)
+  if(window.location.hash === '#booking'){
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+  if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
   var $ = function(id){ return document.getElementById(id); };
   function showErr(id, show){
     var el = $('f_'+id) || $(id);
@@ -925,30 +931,31 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           var jsPDF = window.jspdf.jsPDF;
           var doc = new jsPDF({ unit:'pt', format:'a4' });
           var W = doc.internal.pageSize.getWidth();
-          doc.setFillColor(212,175,55); doc.rect(0,0,W,78,'F');
+          var headerH = 108;
+          doc.setFillColor(212,175,55); doc.rect(0,0,W,headerH,'F');
           var textLeft = 40;
           if(logoDataUrl){
             try {
-              doc.addImage(logoDataUrl, 'PNG', 36, 14, 48, 48);
-              textLeft = 96;
+              // Logo sized to sit with the 5-line header block
+              doc.addImage(logoDataUrl, 'PNG', 28, 19, 70, 70);
+              textLeft = 110;
             } catch(imgErr){ textLeft = 40; }
           }
           doc.setTextColor(26,20,5);
-          doc.setFont('helvetica','bold'); doc.setFontSize(20);
-          doc.text('GoCav Transport Services', textLeft, 34);
-          doc.setFont('helvetica','normal'); doc.setFontSize(9);
-          doc.text('Premium Chauffeur Service · Cavite · Laguna · Batangas · All NCR', textLeft, 50);
+          doc.setFont('helvetica','bold'); doc.setFontSize(18);
+          doc.text('GoCav Transport Services', textLeft, 26);
+          doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+          doc.text('Premium Chauffeur Service · Cavite · Laguna · Batangas · All NCR', textLeft, 40);
           doc.setFontSize(8);
-          doc.text('0976-046-5134 / 0995-435-5514 · gocav.transport@gmail.com', textLeft, 64);
-          doc.setTextColor(26,20,5); doc.setFontSize(11); doc.setFont('helvetica','bold');
-          doc.text('QUOTATION', W-40, 34, {align:'right'});
+          doc.text('0976-046-5134 / 0995-435-5514 · gocav.transport@gmail.com', textLeft, 54);
+          doc.text('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite', textLeft, 68);
+          doc.text('Non-VAT Reg. 940-158-988-0000', textLeft, 82);
+          doc.setFont('helvetica','bold'); doc.setFontSize(11);
+          doc.text('QUOTATION', W-40, 28, {align:'right'});
           doc.setFont('helvetica','normal'); doc.setFontSize(9);
-          doc.text('Ref: '+b.ref, W-40, 50, {align:'right'});
-          doc.text('Date: '+b.date, W-40, 64, {align:'right'});
-          doc.setTextColor(60,60,70); doc.setFont('helvetica','normal'); doc.setFontSize(8);
-          doc.text('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite', 40, 94);
-          doc.text('Non-VAT Reg. 940-158-988-0000', 40, 106);
-          var y = 128;
+          doc.text('Ref: '+b.ref, W-40, 44, {align:'right'});
+          doc.text('Date: '+b.date, W-40, 58, {align:'right'});
+          var y = headerH + 22;
           doc.setTextColor(30,30,30);
           doc.setFont('helvetica','bold'); doc.setFontSize(12);
           doc.text('Client Details', 40, y); y+=18;
@@ -1009,7 +1016,6 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           }
           y+=12;
           doc.text('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite', 40, y); y+=11;
-          doc.text('Non-VAT Reg. 940-158-988-0000', 40, y); y+=11;
           doc.text('Cancellation: free up to 24h before pickup. See FAQ for full policy.', 40, y);
           doc.save('GoCav-Quotation-'+b.ref+'.pdf');
         } catch(e){ alert('PDF generation needs an internet connection to load. Please try again.'); }
@@ -1171,16 +1177,19 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       container.innerHTML = '<div style="background:var(--red-soft);border:1px solid var(--red);border-radius:12px;padding:14px;font-size:14px;color:#fca5a5">Your group needs multiple vehicles or a custom arrangement. We\'ll tailor a quote for you.</div>';
       state.selectedVehicle = null; updateSummary(); return;
     }
-    if(!state.selectedVehicle || !opts.some(function(o){return o.key===state.selectedVehicle;})) state.selectedVehicle = opts[0].key;
-    var html = '<p style="font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Recommended Vehicles — tap to select</p>';
+    var comfortOpt = null;
+    opts.forEach(function(o){ if(o.comfort && !comfortOpt) comfortOpt = o; });
+    var stillValid = state.selectedVehicle && opts.some(function(o){ return o.key===state.selectedVehicle; });
+    if(!stillValid) state.selectedVehicle = (comfortOpt || opts[0]).key;
+    var html = '<p style="font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Recommended vehicles — comfort seating is checked</p>';
     html += '<div style="display:grid;gap:10px">';
     opts.forEach(function(o){
       var v = o.v;
       var dayStart = { accent:4500, avanza:5500, montero:6000 };
       var rateLabel = isDay ? ('From ₱'+(dayStart[o.key]||4500).toLocaleString()+'/day') : '₱'+v.perKm+'/km + ₱'+v.base+' base';
       var subNote = isDay ? '8 hrs / 100 km included · fuel & driver' : 'min fare ₱'+v.minFare+' · fuel included';
-      var tagHtml = o.comfort ? '<span class="tag tag-comfort">Comfort Fit</span>' : '<span class="tag tag-max">Max Capacity</span>';
-      if(o.key==='montero') tagHtml = '<span class="tag tag-premium">'+v.tier+'</span> ' + (o.comfort?'<span class="tag tag-comfort">Comfort</span>':'<span class="tag tag-max">Max</span>');
+      var tagHtml = o.comfort ? '<span class="tag tag-comfort">Comfort seating</span>' : '<span class="tag tag-max">Max capacity</span>';
+      if(o.key==='montero') tagHtml = '<span class="tag tag-premium">'+v.tier+'</span> ' + (o.comfort?'<span class="tag tag-comfort">Comfort seating</span>':'<span class="tag tag-max">Max capacity</span>');
       else tagHtml = '<span class="tag '+(o.key==='accent'?'tag-comfort':'tag-premium')+'">'+v.tier+'</span> ' + tagHtml;
       var sel = state.selectedVehicle===o.key ? ' selected' : '';
       html += '<div class="vehicle-opt'+sel+'" data-veh="'+o.key+'">' +
@@ -1245,7 +1254,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     var el = $(id); if(!el) return;
     el.addEventListener('input', function(){ showErr(id.replace('f_',''), false); });
   });
-  function goToStep(n){
+  function goToStep(n, opts){
     state.step = n;
     [1,2,3].forEach(function(i){
       $('step'+i).classList.toggle('active', i===n);
@@ -1257,6 +1266,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     $('line2').classList.toggle('done', n>2);
     if(n===2) setTimeout(computeFare, 100);
     if(n===3) updateSummary();
+    if(opts && opts.skipScroll) return;
     // Scroll so the next step title + inputs sit just under the sticky nav (not mid-page)
     setTimeout(function(){
       var pane = $('step'+n);
@@ -1460,7 +1470,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   onServiceChange();
   updateSummary();
   updateCorpTollNotice();
-  goToStep(1);
+  goToStep(1, {skipScroll:true});
 })();
 </script>
 </body>
