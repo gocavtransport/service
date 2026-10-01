@@ -1172,7 +1172,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       }
       if(estHrs>8){
         var exHr=Math.ceil(estHrs-8)*v.dayExcessHr*days;
-        lines.push({ label:'Excess hours ('+Math.ceil(estHrs-8)+' hr/day × ₱'+v.dayExcessHr+(isDayMulti?' × '+days:'')+' days)', val:exHr });
+        lines.push({ label:'Excess hours ('+Math.ceil(exHrs-8)+' hr/day × ₱'+v.dayExcessHr+(isDayMulti?' × '+days:'')+' days)', val:exHr });
         total+=exHr;
       }
 
@@ -1760,7 +1760,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     $('s_service').textContent = valOrDash(svcName);
     var svcTypeSm = svc ? (svc.split('|')[2]||'') : '';
     var isMultiSm = (svcTypeSm==='DAYRENTAL_MULTI');
-    var isSplitSm = (svcTypeSm==='TRANSFER_ROUND_SPLIT' || svcTypeSm==='TRANSFER_ROUND_MULTIDAY');
+    var isSplitSm = (svcTypeSm==='TRANSFER_ROUND_SPLIT' || svcType==='TRANSFER_ROUND_MULTIDAY');
 
     var daysRow = $('s_days_row');
     if(daysRow){
