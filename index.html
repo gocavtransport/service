@@ -52,10 +52,15 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 .prog-dot.current{border-color:var(--gold);color:var(--gold-light);box-shadow:0 0 0 4px var(--gold-soft)}
 .prog-line{flex:1;height:2px;background:var(--border2);margin:0 8px;align-self:center;transition:background .3s}
 .prog-line.done{background:var(--gold)}
+
+/* Neon Glow for Recommended Vehicle */
 .vehicle-opt{border:2px solid var(--border2);border-radius:14px;padding:16px;cursor:pointer;transition:all .25s;position:relative;background:var(--card2)}
 .vehicle-opt:hover{border-color:rgba(212,175,55,.5)}
-.vehicle-opt.selected{border-color:var(--gold);background:linear-gradient(135deg,var(--gold-soft),transparent);box-shadow:0 0 20px rgba(212,175,55,.2)}
+.vehicle-opt.recommended{border-color:var(--gold);background:linear-gradient(135deg,rgba(212,175,55,.2),var(--card2));box-shadow:0 0 25px rgba(212,175,55,.45),inset 0 0 15px rgba(212,175,55,.2);animation:neonPulse 2.2s infinite ease-in-out}
+@keyframes neonPulse{0%,100%{box-shadow:0 0 20px rgba(212,175,55,.35),inset 0 0 10px rgba(212,175,55,.15)}50%{box-shadow:0 0 35px rgba(212,175,55,.75),inset 0 0 20px rgba(212,175,55,.35)}}
+.vehicle-opt.selected{border-color:var(--gold);background:linear-gradient(135deg,var(--gold-soft),transparent);box-shadow:0 0 25px rgba(212,175,55,.4)}
 .vehicle-opt.selected::after{content:'✓';position:absolute;top:10px;right:12px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#1a1405;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+
 .service-card{cursor:pointer;position:relative;overflow:hidden}
 .service-card.selected{border-color:var(--gold)!important;box-shadow:0 0 0 1px var(--gold),0 0 30px rgba(212,175,55,.25)}
 .service-card.selected::before{content:'SELECTED';position:absolute;top:12px;right:12px;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));color:#1a1405;font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;letter-spacing:.08em;z-index:2}
@@ -517,9 +522,9 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         </div>
 
         <div class="mt-4" id="partnerSuggestBox" style="display:none;padding:14px 16px;border-radius:12px;border:1px solid rgba(212,175,55,.35);background:rgba(212,175,55,.06)">
-          <p style="font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-light);margin:0 0 8px">Assigned Driver &amp; Backup Units</p>
+          <p style="font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-light);margin:0 0 8px">Nearest Available Driver Units</p>
           <div id="partnerSuggestList" style="font-size:14px;line-height:1.55;color:var(--text)"></div>
-          <p style="font-size:12px;color:var(--muted);margin:8px 0 0">System automatically pairs the nearest available driver based on pickup zone. Driver and plate are confirmed the day before.</p>
+          <p style="font-size:12px;color:var(--muted);margin:8px 0 0">GoCav coordinates directly with available drivers based on pickup zone. Driver and plate are confirmed the day before.</p>
         </div>
 
         <div class="mt-4" id="multiDayFields" style="display:none">
@@ -555,15 +560,6 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
             <span class="ftv" id="fareTotal">—</span>
           </div>
           <div class="fare-note" id="fareNote"></div>
-          <div class="corp-toll-notice" id="corpTollNotice" role="status" aria-live="polite">
-            <div class="corp-toll-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1405" stroke-width="2.5"><path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-            </div>
-            <div>
-              <p class="corp-toll-title">Important — toll &amp; parking</p>
-              <p class="corp-toll-body">Toll fees and parking, if any, are <strong>not fully final in this estimate</strong> and will be <strong>added to your total</strong> at actual cost on top of the estimated rate.</p>
-            </div>
-          </div>
         </div>
         <div class="mt-4">
           <label for="f_flight" class="block mb-1.5 font-semibold" style="font-size:15px">Outbound Flight Number <span style="color:var(--muted);font-weight:400;font-size:13px">(for airport pickups — optional)</span></label>
@@ -676,10 +672,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           <span style="font-weight:700;font-size:15px">Estimated Rate</span>
           <span id="s_price" class="serif" style="font-size:28px;font-weight:700;color:var(--gold-light)">—</span>
         </div>
-        <p style="font-size:12px;color:var(--muted);margin:8px 0 0">Fuel included. Toll &amp; parking charged at actual cost. Night surcharge +15% (22:00–06:00). Free cancellation up to 24 hours before pickup.</p>
-        <div class="corp-toll-notice-sm" id="corpTollNoticeSummary" role="status">
-          <p><strong>Toll &amp; parking:</strong> If any, will be <strong>added to your estimated rate</strong> and charged at actual cost.</p>
-        </div>
+        <p style="font-size:12px;color:var(--muted);margin:8px 0 0">Fuel included. Parking, if any, charged at actual cost. Night surcharge +15% (22:00–06:00). Free cancellation up to 24 hours before pickup.</p>
       </div>
     </div>
   </div>
@@ -1458,11 +1451,11 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           if(b.isSplit){
             footNotes.push('Split-Transfer: 2 dispatches confirmed. 10% loyalty discount credited to Trip 2. Inbound flight monitored.');
           } else if(b.dayRentalMulti){
-            footNotes.push('Multi-day site visit: 8 hrs / 100 km per day, returned to pickup daily. 2-way toll and parking at actual cost. Valid 48 hours.');
+            footNotes.push('Multi-day site visit: 8 hrs / 100 km per day, returned to pickup daily. Parking at actual cost. Valid 48 hours.');
           } else if(b.dayRental){
-            footNotes.push('Full-day: 8 hrs / 100 km, fuel and driver included. Client returned to pickup. 2-way toll and parking at actual cost. Valid 48 hours.');
+            footNotes.push('Full-day: 8 hrs / 100 km, fuel and driver included. Client returned to pickup. Parking at actual cost. Valid 48 hours.');
           } else {
-            footNotes.push('Fuel included. Toll and parking at actual cost. Night surcharge +15% (22:00-06:00). Valid 48 hours.');
+            footNotes.push('Fuel included. Parking at actual cost. Night surcharge +15% (22:00-06:00). Valid 48 hours.');
           }
           footNotes.push('Driver and plate number will be sent on Viber or WhatsApp the day before pickup.');
           footNotes.push('Address: Le Rica Homes, Begonia St B19 L68, Brgy. San Francisco, General Trias, Cavite');
@@ -1663,6 +1656,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 
   $('f_corporate').addEventListener('change', function(){ state.corporate = this.checked; computeFare(); updateSummary(); updateCorpTollNotice(); updateCorpFields(); });
 
+  // Updated Vehicle Selection & Neon Glow Recommended Logic
   function renderVehicles(){
     var pax = parseInt($('f_pax').value)||0, bags = parseInt($('f_luggage').value)||0;
     var container = $('vehicleOptions');
@@ -1670,6 +1664,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     var svcType = (($('f_service').value).split('|')[2])||'';
     var isDay = (svcType==='DAYRENTAL' || svcType==='DAYRENTAL_MULTI');
     var opts = [];
+    
     Object.keys(VEHICLES).forEach(function(k){
       var v = VEHICLES[k];
       if(pax <= v.maxPax && bags <= v.maxBags){
@@ -1677,13 +1672,16 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         opts.push({ key:k, v:v, comfort:comfort });
       }
     });
+
     if(opts.length===0){
       container.innerHTML = '<div style="background:var(--red-soft);border:1px solid var(--red);border-radius:12px;padding:14px;font-size:14px;color:#fca5a5">Your group needs multiple vehicles or a custom arrangement. We\'ll tailor a quote for you.</div>';
       state.selectedVehicle = null; updateSummary(); return;
     }
+
     var comfortOpt = null;
     opts.forEach(function(o){ if(o.comfort && !comfortOpt) comfortOpt = o; });
 
+    // When passengers reach 4+, automatically recommend/mark 6-Seater (avanza) for comfort
     var recommendedKey = comfortOpt ? comfortOpt.key : (pax >= 4 ? 'avanza' : opts[0].key);
     var stillValid = state.selectedVehicle && opts.some(function(o){ return o.key===state.selectedVehicle; });
     if(!stillValid) {
@@ -1714,8 +1712,11 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       if(o.key==='montero') tagHtml = '<span class="tag tag-premium">'+v.tier+'</span> ' + tagHtml;
       else tagHtml = '<span class="tag '+(o.key==='accent'?'tag-comfort':'tag-premium')+'">'+v.tier+'</span> ' + tagHtml;
 
+      var isRecommended = (o.key === recommendedKey && pax >= 4);
       var sel = state.selectedVehicle===o.key ? ' selected' : '';
-      html += '<div class="vehicle-opt'+sel+'" data-veh="'+o.key+'">' +
+      var recClass = isRecommended ? ' recommended' : '';
+
+      html += '<div class="vehicle-opt'+sel+recClass+'" data-veh="'+o.key+'">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
         '<div><strong style="font-size:16px">'+v.name+'</strong> <span style="font-size:13px;color:var(--muted)">· '+v.maxPax+' pax max · '+v.maxBags+' bags · similar unit may be assigned</span></div>'+tagHtml+'</div>' +
         '<div style="margin-top:6px;font-size:14px;color:var(--gold-light);font-weight:700">'+rateLabel+' <span style="color:var(--muted);font-weight:400;font-size:12px">— '+subNote+'</span></div>' +
@@ -2085,7 +2086,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         payment: $('f_payment').value,
         terms: getPayTerms(svcType, state.corporate),
         partner: partnerDispatchLine(),
-        preferred: 'Auto-assigned nearest driver',
+        preferred: 'Auto-coordinated by GoCav',
         channel: state.sendMethod,
         notes: $('f_notes').value.trim(),
         gocav20: fareTotalNum ? Math.round(fareTotalNum*0.20) : '',
