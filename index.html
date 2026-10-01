@@ -1042,6 +1042,16 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         lines.push({ label:'Full-Day Rate ('+zoneLabel+' Zone) — '+v.name+' (8 hrs / 100 km)', val:dayRate });
       }
       total = dayRateTotal;
+
+      // ✅ NEW: VEHICLE POSITIONING FEE — same logic as Point-to-Point
+      if(!isBaseZone(pickupTxt)){
+        var posKm = roadKm(HOME, pg);
+        var posFee = posKm * v.repositionKm;
+        lines.push({ label:'Vehicle Positioning Fee (Home Base → Pickup, ~'+posKm.toFixed(0)+' km @ ₱'+v.repositionKm+'/km)', val:posFee });
+        total += posFee;
+      }
+      // ✅ END NEW
+
       var homeDiscTotal = 0;
       if(isBaseZone(pickupTxt)){
         homeDiscTotal = HOME_DAY_DISCOUNT[vkey] * days;
@@ -1078,9 +1088,9 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       bd.innerHTML = html;
       tot.textContent = '₱'+Math.round(total).toLocaleString();
       if(isDayMulti){
-        note.innerHTML = '✓ Fuel &amp; driver included · 8 hrs / 100 km per day · Returned to pickup daily · ⚠ 2-way toll × '+days+' days &amp; parking at actual · <span class="fare-calc">Zone: '+zoneLabel+' · '+days+' consecutive days</span>';
+        note.innerHTML = '✓ Fuel & driver included · 8 hrs / 100 km per day · Returned to pickup daily · ⚠ 2-way toll × '+days+' days & parking at actual · <span class="fare-calc">Zone: '+zoneLabel+' · '+days+' consecutive days</span>';
       } else {
-        note.innerHTML = '✓ Fuel &amp; driver included · 8 hrs / 100 km included · ⚠ 2-way toll &amp; parking charged at actual · <span class="fare-calc">Zone: '+zoneLabel+' · Client returned to pickup point</span>';
+        note.innerHTML = '✓ Fuel & driver included · 8 hrs / 100 km included · ⚠ Vehicle positioning fee, 2-way toll & parking charged at actual · <span class="fare-calc">Zone: '+zoneLabel+' · Client returned to pickup point</span>';
       }
       box.classList.add('show');
       state.lastFare = { total:Math.round(total), lines:lines, dayRental:true, dayRentalMulti:isDayMulti, days:days, zone:zoneLabel, vkey:vkey };
@@ -1097,7 +1107,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       state.lastFare = { custom:true }; updateSummary(); return;
     }
     var baseMult = isMulti ? 2 : 1;
-    lines.push({ label:'Base Charge (dispatch &amp; prep) ×'+baseMult, val:v.base*baseMult });
+    lines.push({ label:'Base Charge (dispatch & prep) ×'+baseMult, val:v.base*baseMult });
     total += v.base*baseMult;
     var oneLegKm = roadKm(pg2, dg);
     var legs = isRound ? 2 : 1;
@@ -1108,7 +1118,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     if(!isBaseZone(pickupTxt)){
       var posKm = roadKm(HOME, pg2);
       var posFee = posKm * v.repositionKm;
-      lines.push({ label:'Vehicle positioning (Home Base → pickup, ~'+posKm.toFixed(0)+' km @ ₱'+v.repositionKm+'/km)', val:posFee });
+      lines.push({ label:'Vehicle Positioning Fee (Home Base → pickup, ~'+posKm.toFixed(0)+' km @ ₱'+v.repositionKm+'/km)', val:posFee });
       total += posFee;
     }
     if(isMulti){
