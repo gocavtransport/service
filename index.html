@@ -417,7 +417,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           <div>
             <label for="f_pax" class="block mb-1.5 font-semibold" style="font-size:15px">Passengers <span style="color:var(--red)">*</span></label>
             <input type="number" id="f_pax" min="1" max="20" placeholder="e.g. 3" required>
-            <div class="err-msg" id="err_pax">Enter number of passengers (children count as 1). Sedans hold max 4 pax.</div>
+            <div class="err-msg" id="err_pax">Enter number of passengers (Sedans hold max 4 pax).</div>
           </div>
           <div>
             <label for="f_luggage" class="block mb-1.5 font-semibold" style="font-size:15px">Large Bags</label>
@@ -1665,7 +1665,6 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 
   $('f_corporate').addEventListener('change', function(){ state.corporate = this.checked; computeFare(); updateSummary(); updateCorpTollNotice(); updateCorpFields(); });
 
-  // Updated vehicle render: blocks sedan selection for 5+ pax, automatically selects 6-seater/SUV for comfort at 4+ pax with neon glow
   function renderVehicles(){
     var pax = parseInt($('f_pax').value)||0, bags = parseInt($('f_luggage').value)||0;
     var container = $('vehicleOptions');
@@ -1690,7 +1689,6 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     var comfortOpt = null;
     opts.forEach(function(o){ if(o.comfort && !comfortOpt) comfortOpt = o; });
 
-    // For 4 pax or more, automatically recommend 6-seater/SUV; if sedan is selected for 5+ pax (blocked by maxPax anyway), fallback to avanza
     var recommendedKey = comfortOpt ? comfortOpt.key : (pax >= 4 ? 'avanza' : opts[0].key);
     var stillValid = state.selectedVehicle && opts.some(function(o){ return o.key===state.selectedVehicle; });
     if(!stillValid || (pax >= 4 && state.selectedVehicle === 'accent')) {
@@ -1698,8 +1696,10 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     }
 
     var html = '<p style="font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Recommended vehicles</p>';
-    if (pax >= 4) {
-      html += '<div style="background:var(--gold-soft);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--gold-light);margin-bottom:10px">💡 <strong>Comfort Auto-Selected:</strong> For ' + pax + ' passengers, our 6-Seater or SUV is automatically recommended for roomier comfort. You can still select Sedan if preferred.</div>';
+    if (pax === 4) {
+      html += '<div style="background:var(--gold-soft);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--gold-light);margin-bottom:10px">💡 <strong>Comfort Tip:</strong> For 4 passengers, our 6-Seater is recommended for roomier comfort, but you can still choose the Sedan.</div>';
+    } else if (pax >= 5) {
+      html += '<div style="background:var(--red-soft);border:1px solid rgba(239,68,68,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:#fca5a5;margin-bottom:10px">❌ <strong>Sedan Unavailable:</strong> Sedans accommodate a maximum of 4 passengers. Please select a 6-Seater or SUV.</div>';
     }
 
     html += '<div style="display:grid;gap:10px">';
@@ -1714,7 +1714,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 
       var tagHtml = '';
       if(!canFit) {
-        tagHtml = '<span class="tag tag-max">❌ Exceeds max capacity</span>';
+        tagHtml = '<span class="tag tag-max">❌ Exceeds max capacity (Max 4 pax)</span>';
       } else if(isRecommended) {
         tagHtml = '<span class="tag tag-comfort">⭐ Comfort Recommended</span>';
       } else if(pax <= v.comfortPax) {
@@ -1743,7 +1743,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           state.selectedVehicle = k;
           renderVehicles(); computeFare(); updateSummary();
         } else {
-          alert('This vehicle cannot accommodate ' + pax + ' passengers comfortably. Please select a larger vehicle class.');
+          alert('Sedans are limited to a maximum of 4 passengers. Please select a 6-Seater or SUV for ' + pax + ' passengers.');
         }
       });
     });
