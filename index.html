@@ -1220,7 +1220,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       var singleLegFare = Math.max(oneLegKm * v.perKm, v.minFare);
       var trip1Sub = trip1Base + singleLegFare;
       var trip1Night = isNight(depTime);
-      var trip1NightFee = trip1Night ? Math.round(trip1Sub * 0.15) : 0; // Updated to 15%
+      var trip1NightFee = trip1Night ? Math.round(trip1Sub * 0.15) : 0;
 
       var trip1Label = isAirportTrip
         ? 'Trip 1 Departure (' + v.name + ' ~' + oneLegKm.toFixed(0) + ' km + airport dispatch)'
@@ -1241,7 +1241,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       lines.push({ label: trip2Label, val: trip2Sub });
 
       var trip2Night = isNight(retTime);
-      var trip2NightFee = trip2Night ? Math.round(trip2Sub * 0.15) : 0; // Updated to 15%
+      var trip2NightFee = trip2Night ? Math.round(trip2Sub * 0.15) : 0;
       if(trip2Night) lines.push({ label: 'Trip 2 Night Surcharge (22:00–06:00, return at ' + retTime + ' [+15%])', val: trip2NightFee });
 
       total += (trip1Sub + trip1NightFee + trip2Sub + trip2NightFee);
@@ -1301,7 +1301,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       });
 
       if(isNight(depTime)){
-        var night = Math.round(total * 0.15); // Updated to 15%
+        var night = Math.round(total * 0.15);
         lines.push({ label: 'Night surcharge (22:00–06:00, +15%)', val: night });
         total += night;
       }
@@ -1656,7 +1656,6 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 
   $('f_corporate').addEventListener('change', function(){ state.corporate = this.checked; computeFare(); updateSummary(); updateCorpTollNotice(); updateCorpFields(); });
 
-  // Updated Vehicle Selection & Neon Glow Recommended Logic
   function renderVehicles(){
     var pax = parseInt($('f_pax').value)||0, bags = parseInt($('f_luggage').value)||0;
     var container = $('vehicleOptions');
@@ -1681,16 +1680,16 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     var comfortOpt = null;
     opts.forEach(function(o){ if(o.comfort && !comfortOpt) comfortOpt = o; });
 
-    // When passengers reach 4+, automatically recommend/mark 6-Seater (avanza) for comfort
+    // When passengers reach 4+, automatically select and recommend 6-Seater for comfort
     var recommendedKey = comfortOpt ? comfortOpt.key : (pax >= 4 ? 'avanza' : opts[0].key);
     var stillValid = state.selectedVehicle && opts.some(function(o){ return o.key===state.selectedVehicle; });
-    if(!stillValid) {
+    if(!stillValid || pax >= 4) {
       state.selectedVehicle = recommendedKey;
     }
 
-    var html = '<p style="font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Recommended vehicles — comfort seating is checked</p>';
-    if (pax >= 4 && state.selectedVehicle === 'accent') {
-      html += '<div style="background:var(--gold-soft);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--gold-light);margin-bottom:10px">💡 <strong>Tip:</strong> For 4+ passengers, our 6-Seater is marked for roomier comfort, but you can keep the Sedan selected if preferred.</div>';
+    var html = '<p style="font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Recommended vehicles</p>';
+    if (pax >= 4) {
+      html += '<div style="background:var(--gold-soft);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--gold-light);margin-bottom:10px">💡 <strong>Comfort Assigned:</strong> For 4+ passengers, our 6-Seater has been automatically selected for comfort (Sedan max capacity is 4 pax).</div>';
     }
 
     html += '<div style="display:grid;gap:10px">';
@@ -2222,15 +2221,15 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     var hits = matchPartnerUnits();
     box.style.display = 'block';
     if(!hits.length){
-      list.innerHTML = '<p style="margin:0;color:var(--text)">We are scanning the nearest available driver units in your area. The primary and backup units will be assigned automatically.</p>';
+      list.innerHTML = '<p style="margin:0;color:var(--text)">We are scanning available driver units in your area. GoCav will coordinate the dispatch.</p>';
       return;
     }
     var className = { accent:'Sedan', avanza:'6-Seater', montero:'SUV' };
     var topUnits = hits.slice(0, 4);
-    list.innerHTML = '<p style="margin:0 0 6px;color:var(--muted);font-size:13px">Assigned Primary &amp; Backup Units (Nearest Bases):</p>' + topUnits.map(function(x, idx){
+    list.innerHTML = '<p style="margin:0 0 6px;color:var(--muted);font-size:13px">Available Driver Units (Nearest Bases):</p>' + topUnits.map(function(x, idx){
       var u = x.u;
       var cls = className[u.cls] || u.cls;
-      var role = idx === 0 ? '<strong style="color:var(--gold-light)">[Primary Match]</strong>' : '<span style="color:var(--muted)">[Backup #' + idx + ']</span>';
+      var role = idx === 0 ? '<strong style="color:var(--gold-light)">[Nearest Match]</strong>' : '<span style="color:var(--muted)">[Alternative #' + idx + ']</span>';
       return '<div style="margin:4px 0">' + role + ' <strong>' + u.driver + '</strong> · ' + cls + ' (' + u.unit + ') · Base: ' + u.base + '</div>';
     }).join('');
   }
@@ -2240,7 +2239,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     if(!hits.length) return 'Partner unit: Auto-assigned from nearest base';
     var primary = hits[0].u;
     var backups = hits.slice(1, 4).map(function(x){ return x.u.driver + ' (' + x.u.base + ')'; }).join(', ');
-    return 'Primary Driver: ' + primary.driver + ' (' + primary.unit + ' ' + primary.plate + ', Base: ' + primary.base + ')' + (backups ? ' | Backups: ' + backups : '');
+    return 'Assigned Driver: ' + primary.driver + ' (' + primary.unit + ' ' + primary.plate + ', Base: ' + primary.base + ')' + (backups ? ' | Alternates: ' + backups : '');
   }
 
   var PARTNER_SLOTS = 2;
