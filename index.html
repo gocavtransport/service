@@ -1689,15 +1689,15 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     var comfortOpt = null;
     opts.forEach(function(o){ if(o.comfort && !comfortOpt) comfortOpt = o; });
 
-    var recommendedKey = comfortOpt ? comfortOpt.key : (pax >= 4 ? 'avanza' : opts[0].key);
+    var defaultKey = comfortOpt ? comfortOpt.key : opts[0].key;
     var stillValid = state.selectedVehicle && opts.some(function(o){ return o.key===state.selectedVehicle; });
-    if(!stillValid || (pax >= 4 && state.selectedVehicle === 'accent')) {
-      state.selectedVehicle = recommendedKey;
+    if(!stillValid) {
+      state.selectedVehicle = defaultKey;
     }
 
     var html = '<p style="font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Recommended vehicles</p>';
     if (pax === 4) {
-      html += '<div style="background:var(--gold-soft);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--gold-light);margin-bottom:10px">💡 <strong>Comfort Tip:</strong> For 4 passengers, our 6-Seater is recommended for roomier comfort, but you can still choose the Sedan.</div>';
+      html += '<div style="background:var(--gold-soft);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--gold-light);margin-bottom:10px">💡 <strong>Comfort Tip:</strong> For 4 passengers, our 6-Seater is highlighted for a roomier ride, but <strong>Sedan is fully available</strong> if you prefer.</div>';
     } else if (pax >= 5) {
       html += '<div style="background:var(--red-soft);border:1px solid rgba(239,68,68,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:#fca5a5;margin-bottom:10px">❌ <strong>Sedan Unavailable:</strong> Sedans accommodate a maximum of 4 passengers. Please select a 6-Seater or SUV.</div>';
     }
@@ -1706,7 +1706,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     Object.keys(VEHICLES).forEach(function(k){
       var v = VEHICLES[k];
       var canFit = pax <= v.maxPax && bags <= v.maxBags;
-      var isRecommended = (k === recommendedKey && pax >= 4);
+      var isRecommended = (k === 'avanza' && pax === 4);
       var sel = state.selectedVehicle===k ? ' selected' : '';
       var recClass = isRecommended ? ' recommended' : '';
       var dayStart = { accent:4500, avanza:5500, montero:6000 };
