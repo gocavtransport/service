@@ -142,6 +142,18 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 .fare-total .ftl{font-weight:700;font-size:15px}
 .fare-total .ftv{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--gold-light)}
 .fare-note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+.corp-toll-notice{display:none;margin-top:14px;padding:14px 16px;border-radius:12px;border:1px solid rgba(212,175,55,.55);background:linear-gradient(135deg,rgba(212,175,55,.18),rgba(212,175,55,.06));box-shadow:0 0 0 0 rgba(212,175,55,.45);animation:corpGlow 2.2s ease-in-out infinite;align-items:flex-start;gap:12px}
+.corp-toll-notice.show{display:flex}
+.corp-toll-notice .corp-toll-icon{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px var(--gold-glow)}
+.corp-toll-notice .corp-toll-title{font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-light);margin:0 0 4px}
+.corp-toll-notice .corp-toll-body{font-size:13px;color:var(--text);line-height:1.55;margin:0}
+.corp-toll-notice .corp-toll-body strong{color:var(--gold-light)}
+@keyframes corpGlow{0%,100%{box-shadow:0 0 8px rgba(212,175,55,.25),0 0 0 0 rgba(212,175,55,.35)}50%{box-shadow:0 0 22px rgba(212,175,55,.55),0 0 0 6px rgba(212,175,55,.12)}}
+.corp-toll-notice-sm{display:none;margin-top:12px;padding:12px 14px;border-radius:10px;border:1px solid rgba(212,175,55,.5);background:linear-gradient(135deg,rgba(212,175,55,.16),rgba(212,175,55,.05));animation:corpGlow 2.2s ease-in-out infinite}
+.corp-toll-notice-sm.show{display:block}
+.corp-toll-notice-sm p{margin:0;font-size:12px;line-height:1.5;color:var(--text)}
+.corp-toll-notice-sm strong{color:var(--gold-light)}
+.fare-calc{font-size:11px;color:#6a6c82;font-style:italic}
 .pdf-btn{display:inline-flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--gold);color:var(--gold-light);padding:12px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:14px}
 .pdf-btn:hover{background:var(--gold-soft);transform:translateY(-1px)}
 @media (max-width:640px){
@@ -969,8 +981,28 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     { k:['trece','trece martires'], lat:14.2828, lng:120.8647, name:'Trece Martires, Cavite', zone:'zone2' },
     { k:['amadeo','indang','naic','ternate','alfonso','maragondon'], lat:14.2000, lng:120.8500, name:'Amadeo / Indang / Naic / Ternate, Cavite', zone:'zone2' }
   ];
-  var BASE_KEYWORDS = ['general trias','gen trias','gentri','le rica'];
-  var state = { step:1, sendMethod:'Email', selectedVehicle:null, lastFare:null, lastBooking:null, corporate:false, routePref:'fastest' };
+
+  // Helper functions for saving to Google Sheets without crashing the main script
+  function postBookingToSheet(data) {
+    if(!SHEET_WEBAPP_URL) return;
+    data.token = SHEET_TOKEN;
+    fetch(SHEET_WEBAPP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(function(e){ console.warn("Sheet save background task", e); });
+  }
+
+  function sheetLogUrl(data) {
+    var url = SHEET_WEBAPP_URL + '?token=' + SHEET_TOKEN;
+    for (var key in data) {
+      if(data.hasOwnProperty(key)) {
+        url += '&' + key + '=' + encodeURIComponent(data[key] || '');
+      }
+    }
+    return url;
+  }
 
   var $ = function(id){ return document.getElementById(id); };
 
@@ -1170,9 +1202,9 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       bd.innerHTML = html;
       tot.textContent = '₱'+Math.round(total).toLocaleString();
       if(isDayMulti){
-        note.innerHTML = '✓ Fuel & driver included · 8 hrs / 100 km per day · Returned to pickup daily · ⚠ 2-way toll × '+days+' days & parking at actual · <span class="fare-calc">Zone: '+zoneLabel+' · '+days+' consecutive days</span>';
+        note.innerHTML = '✓ Fuel, driver & tolls included · 8 hrs / 100 km per day · Returned to pickup daily · Parking at actual · <span class="fare-calc">Zone: '+zoneLabel+' · '+days+' consecutive days</span>';
       } else {
-        note.innerHTML = '✓ Fuel & driver included · 8 hrs / 100 km included · ⚠ Vehicle positioning fee, 2-way toll & parking charged at actual · <span class="fare-calc">Zone: '+zoneLabel+' · Client returned to pickup point</span>';
+        note.innerHTML = '✓ Fuel, driver & tolls included · 8 hrs / 100 km included · Parking charged at actual · <span class="fare-calc">Zone: '+zoneLabel+' · Client returned to pickup point</span>';
       }
       box.classList.add('show');
       state.lastFare = { total:Math.round(total), lines:lines, dayRental:true, dayRentalMulti:isDayMulti, days:days, zone:zoneLabel, vkey:vkey };
@@ -1739,7 +1771,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     $('s_service').textContent = valOrDash(svcName);
     var svcTypeSm = svc ? (svc.split('|')[2]||'') : '';
     var isMultiSm = (svcTypeSm==='DAYRENTAL_MULTI');
-    var isSplitSm = (svcTypeSm==='TRANSFER_ROUND_SPLIT' || svcType==='TRANSFER_ROUND_MULTIDAY');
+    var isSplitSm = (svcTypeSm==='TRANSFER_ROUND_SPLIT' || svcTypeSm==='TRANSFER_ROUND_MULTIDAY');
 
     var daysRow = $('s_days_row');
     if(daysRow){
@@ -2096,8 +2128,14 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         gocav20: fareTotalNum ? Math.round(fareTotalNum*0.20) : '',
         partner80: fareTotalNum ? Math.round(fareTotalNum*0.80) : ''
       };
-      postBookingToSheet(sheetRow);
-      if($('saveSheetBtn')) $('saveSheetBtn').href = sheetLogUrl(sheetRow);
+      
+      try {
+        if(typeof postBookingToSheet === 'function') postBookingToSheet(sheetRow);
+        if($('saveSheetBtn') && typeof sheetLogUrl === 'function') $('saveSheetBtn').href = sheetLogUrl(sheetRow);
+      } catch(sheetErr) {
+        console.warn("Sheet logging skipped", sheetErr);
+      }
+
       $('resendEm').href = emLink;
       $('resendWa').href = waLink;
       $('resendVb').href = vbLink;
@@ -2226,11 +2264,10 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     var hits = matchPartnerUnits();
     box.style.display = 'block';
     if(!hits.length){
-      // Fallback show top general units if specific corridor keywords aren't matched yet
       hits = PARTNER_UNITS.map(function(u){ return { u:u, score:1 }; });
     }
     var className = { accent:'Sedan', avanza:'6-Seater', montero:'SUV' };
-    var topUnits = hits.slice(0, 4); // Display up to 4 nearest/available units
+    var topUnits = hits.slice(0, 4);
     list.innerHTML = '<p style="margin:0 0 6px;color:var(--muted);font-size:13px">Available Driver Units (Nearest Bases):</p>' + topUnits.map(function(x, idx){
       var u = x.u;
       var cls = className[u.cls] || u.cls;
