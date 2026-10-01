@@ -417,7 +417,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           <div>
             <label for="f_pax" class="block mb-1.5 font-semibold" style="font-size:15px">Passengers <span style="color:var(--red)">*</span></label>
             <input type="number" id="f_pax" min="1" max="20" placeholder="e.g. 3" required>
-            <div class="err-msg" id="err_pax">Enter number of passengers (children count as 1).</div>
+            <div class="err-msg" id="err_pax">Enter number of passengers (children count as 1). Sedans hold max 4 pax.</div>
           </div>
           <div>
             <label for="f_luggage" class="block mb-1.5 font-semibold" style="font-size:15px">Large Bags</label>
@@ -522,7 +522,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
         </div>
 
         <div class="mt-4" id="partnerSuggestBox" style="display:none;padding:14px 16px;border-radius:12px;border:1px solid rgba(212,175,55,.35);background:rgba(212,175,55,.06)">
-          <p style="font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-light);margin:0 0 8px">Nearest Available Driver Units</p>
+          <p style="font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-light);margin:0 0 8px">Available Driver Units</p>
           <div id="partnerSuggestList" style="font-size:14px;line-height:1.55;color:var(--text)"></div>
           <p style="font-size:12px;color:var(--muted);margin:8px 0 0">GoCav coordinates directly with available drivers based on pickup zone. Driver and plate are confirmed the day before.</p>
         </div>
@@ -560,6 +560,15 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
             <span class="ftv" id="fareTotal">—</span>
           </div>
           <div class="fare-note" id="fareNote"></div>
+          <div class="corp-toll-notice" id="corpTollNotice" role="status" aria-live="polite">
+            <div class="corp-toll-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1405" stroke-width="2.5"><path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            </div>
+            <div>
+              <p class="corp-toll-title">Important — toll &amp; parking</p>
+              <p class="corp-toll-body">Toll fees and parking, if any, are <strong>not fully final in this estimate</strong> and will be <strong>added to your total</strong> at actual cost on top of the estimated rate.</p>
+            </div>
+          </div>
         </div>
         <div class="mt-4">
           <label for="f_flight" class="block mb-1.5 font-semibold" style="font-size:15px">Outbound Flight Number <span style="color:var(--muted);font-weight:400;font-size:13px">(for airport pickups — optional)</span></label>
@@ -1656,6 +1665,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 
   $('f_corporate').addEventListener('change', function(){ state.corporate = this.checked; computeFare(); updateSummary(); updateCorpTollNotice(); updateCorpFields(); });
 
+  // Updated vehicle render: blocks sedan selection for 5+ pax, automatically selects 6-seater/SUV for comfort at 4+ pax with neon glow
   function renderVehicles(){
     var pax = parseInt($('f_pax').value)||0, bags = parseInt($('f_luggage').value)||0;
     var container = $('vehicleOptions');
@@ -1673,60 +1683,68 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     });
 
     if(opts.length===0){
-      container.innerHTML = '<div style="background:var(--red-soft);border:1px solid var(--red);border-radius:12px;padding:14px;font-size:14px;color:#fca5a5">Your group needs multiple vehicles or a custom arrangement. We\'ll tailor a quote for you.</div>';
+      container.innerHTML = '<div style="background:var(--red-soft);border:1px solid var(--red);border-radius:12px;padding:14px;font-size:14px;color:#fca5a5">Your group ('+pax+' passengers) exceeds single-vehicle limit. Please contact us for a van or multi-unit dispatch.</div>';
       state.selectedVehicle = null; updateSummary(); return;
     }
 
     var comfortOpt = null;
     opts.forEach(function(o){ if(o.comfort && !comfortOpt) comfortOpt = o; });
 
-    // When passengers reach 4+, automatically select and recommend 6-Seater for comfort
+    // For 4 pax or more, automatically recommend 6-seater/SUV; if sedan is selected for 5+ pax (blocked by maxPax anyway), fallback to avanza
     var recommendedKey = comfortOpt ? comfortOpt.key : (pax >= 4 ? 'avanza' : opts[0].key);
     var stillValid = state.selectedVehicle && opts.some(function(o){ return o.key===state.selectedVehicle; });
-    if(!stillValid || pax >= 4) {
+    if(!stillValid || (pax >= 4 && state.selectedVehicle === 'accent')) {
       state.selectedVehicle = recommendedKey;
     }
 
     var html = '<p style="font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Recommended vehicles</p>';
     if (pax >= 4) {
-      html += '<div style="background:var(--gold-soft);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--gold-light);margin-bottom:10px">💡 <strong>Comfort Assigned:</strong> For 4+ passengers, our 6-Seater has been automatically selected for comfort (Sedan max capacity is 4 pax).</div>';
+      html += '<div style="background:var(--gold-soft);border:1px solid rgba(212,175,55,.4);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--gold-light);margin-bottom:10px">💡 <strong>Comfort Auto-Selected:</strong> For ' + pax + ' passengers, our 6-Seater or SUV is automatically recommended for roomier comfort. You can still select Sedan if preferred.</div>';
     }
 
     html += '<div style="display:grid;gap:10px">';
-    opts.forEach(function(o){
-      var v = o.v;
+    Object.keys(VEHICLES).forEach(function(k){
+      var v = VEHICLES[k];
+      var canFit = pax <= v.maxPax && bags <= v.maxBags;
+      var isRecommended = (k === recommendedKey && pax >= 4);
+      var sel = state.selectedVehicle===k ? ' selected' : '';
+      var recClass = isRecommended ? ' recommended' : '';
       var dayStart = { accent:4500, avanza:5500, montero:6000 };
-      var rateLabel = isDay ? ('From ₱'+(dayStart[o.key]||4500).toLocaleString()+'/day') : '₱'+v.perKm+'/km + ₱'+v.base+' base';
-      var subNote = isDay ? '8 hrs / 100 km included · fuel & driver' : 'min fare ₱'+v.minFare+' · fuel included';
-      
+      var rateLabel = isDay ? ('From ₱'+(dayStart[k]||4500).toLocaleString()+'/day') : '₱'+v.perKm+'/km + ₱'+v.base+' base';
+
       var tagHtml = '';
-      if(o.key === recommendedKey && pax >= 4) {
+      if(!canFit) {
+        tagHtml = '<span class="tag tag-max">❌ Exceeds max capacity</span>';
+      } else if(isRecommended) {
         tagHtml = '<span class="tag tag-comfort">⭐ Comfort Recommended</span>';
-      } else if(o.comfort) {
+      } else if(pax <= v.comfortPax) {
         tagHtml = '<span class="tag tag-comfort">Comfort seating</span>';
       } else {
         tagHtml = '<span class="tag tag-max">Max capacity (Snug)</span>';
       }
 
-      if(o.key==='montero') tagHtml = '<span class="tag tag-premium">'+v.tier+'</span> ' + tagHtml;
-      else tagHtml = '<span class="tag '+(o.key==='accent'?'tag-comfort':'tag-premium')+'">'+v.tier+'</span> ' + tagHtml;
+      if(k==='montero') tagHtml = '<span class="tag tag-premium">'+v.tier+'</span> ' + tagHtml;
+      else tagHtml = '<span class="tag '+(k==='accent'?'tag-comfort':'tag-premium')+'">'+v.tier+'</span> ' + tagHtml;
 
-      var isRecommended = (o.key === recommendedKey && pax >= 4);
-      var sel = state.selectedVehicle===o.key ? ' selected' : '';
-      var recClass = isRecommended ? ' recommended' : '';
-
-      html += '<div class="vehicle-opt'+sel+recClass+'" data-veh="'+o.key+'">' +
+      html += '<div class="vehicle-opt'+sel+recClass+'" data-veh="'+k+'" style="'+(canFit ? '' : 'opacity:0.4;cursor:not-allowed;')+'">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
-        '<div><strong style="font-size:16px">'+v.name+'</strong> <span style="font-size:13px;color:var(--muted)">· '+v.maxPax+' pax max · '+v.maxBags+' bags · similar unit may be assigned</span></div>'+tagHtml+'</div>' +
-        '<div style="margin-top:6px;font-size:14px;color:var(--gold-light);font-weight:700">'+rateLabel+' <span style="color:var(--muted);font-weight:400;font-size:12px">— '+subNote+'</span></div>' +
+        '<div><strong style="font-size:16px">'+v.name+'</strong> <span style="font-size:13px;color:var(--muted)">· '+v.maxPax+' pax max · '+v.maxBags+' bags</span></div>'+tagHtml+'</div>' +
+        '<div style="margin-top:6px;font-size:14px;color:var(--gold-light);font-weight:700">'+rateLabel+'</div>' +
         '</div>';
     });
     html += '</div>';
     container.innerHTML = html;
+
     container.querySelectorAll('.vehicle-opt').forEach(function(el){
       el.addEventListener('click', function(){
-        state.selectedVehicle = el.getAttribute('data-veh');
-        renderVehicles(); computeFare(); updateSummary();
+        var k = el.getAttribute('data-veh');
+        var v = VEHICLES[k];
+        if(pax <= v.maxPax && bags <= v.maxBags){
+          state.selectedVehicle = k;
+          renderVehicles(); computeFare(); updateSummary();
+        } else {
+          alert('This vehicle cannot accommodate ' + pax + ' passengers comfortably. Please select a larger vehicle class.');
+        }
       });
     });
     computeFare(); updateSummary(); renderPartnerSuggest();
@@ -1831,6 +1849,14 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     if(!$('f_service').value){ showErr('service',true); ok=false; } else showErr('service',false);
     var pax = parseInt($('f_pax').value);
     if(!pax || pax<1){ showErr('pax',true); ok=false; } else showErr('pax',false);
+    if(state.selectedVehicle){
+      var v = VEHICLES[state.selectedVehicle];
+      if(pax > v.maxPax){
+        showErr('pax',true);
+        alert('Selected vehicle ('+v.name+') only accommodates up to '+v.maxPax+' passengers. Please select a larger vehicle.');
+        ok=false;
+      }
+    }
     var svcType = (($('f_service').value).split('|')[2])||'';
     if(svcType==='DAYRENTAL_MULTI'){
       if(!$('f_corporate').checked){ $('f_corporate').checked = true; state.corporate = true; }
