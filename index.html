@@ -923,6 +923,17 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
 
 <script>
 (function(){
+  var state = {
+    selectedVehicle: null,
+    corporate: false,
+    routePref: 'fastest',
+    lastFare: null,
+    sendMethod: 'Email',
+    step: 1,
+    intent: 'book',
+    lastBooking: null
+  };
+
   var WA = "639760465134", VB = "639760465134", EM = "gocav.transport@gmail.com";
   var SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzDKQQy0XcKvip6WQ22Fd6CsKoVYCp5lXyfFme3WkkAHjs_3j6uzOGbRbbQJvBgxFFdNQ/exec";
   var SHEET_TOKEN = "gocav-2026";
@@ -943,6 +954,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
   };
   var HOME_DAY_DISCOUNT = { accent:300, avanza:350, montero:400 };
   var HOME = { lat:14.3137, lng:120.8814, name:'Le Rica Homes, General Trias, Cavite' };
+  var BASE_KEYWORDS = ['general trias', 'gen trias', 'gentri', 'le rica'];
 
   var GEO = [
     { k:['naia','airport','terminal'], lat:14.5080, lng:121.0194, name:'NAIA Airport', zone:'airport' },
@@ -982,7 +994,6 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     { k:['amadeo','indang','naic','ternate','alfonso','maragondon'], lat:14.2000, lng:120.8500, name:'Amadeo / Indang / Naic / Ternate, Cavite', zone:'zone2' }
   ];
 
-  // Helper functions for saving to Google Sheets without crashing the main script
   function postBookingToSheet(data) {
     if(!SHEET_WEBAPP_URL) return;
     data.token = SHEET_TOKEN;
@@ -1211,7 +1222,6 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       updateSummary(); return;
     }
 
-    // ---- TRANSFERS (One-Way, Split-Day, Multi-Day Return) ----
     if(!pickupTxt || !dropoffTxt){ box.classList.remove('show'); state.lastFare=null; updateSummary(); return; }
     var pg2 = findGeo(pickupTxt), dg = findGeo(dropoffTxt);
     if(!pg2 || !dg){
@@ -1981,6 +1991,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     saveLocal();
     var btn = $('submitBtn');
     btn.disabled = true; btn.textContent = 'Preparing…';
+    
     try {
       var svc = $('f_service').value, parts = svc.split('|');
       var svcName = parts[1]||'Custom', svcType = parts[2]||'';
@@ -2143,23 +2154,17 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
       $('successScreen').style.display='block';
       $('successScreen').scrollIntoView({behavior:'smooth'});
 
-      setTimeout(function(){
-        try {
-          if(state.sendMethod==='Email'){
-            var a = document.createElement('a');
-            a.href = emLink; a.target = '_blank'; a.rel = 'noopener noreferrer';
-            document.body.appendChild(a); a.click(); a.remove();
-          } else if(state.sendMethod==='WhatsApp'){
-            var a2 = document.createElement('a');
-            a2.href = waLink; a2.target = '_blank'; a2.rel = 'noopener noreferrer';
-            document.body.appendChild(a2); a2.click(); a2.remove();
-          } else {
-            var a3 = document.createElement('a');
-            a3.href = vbLink;
-            document.body.appendChild(a3); a3.click(); a3.remove();
-          }
-        } catch(navErr){}
-      }, 500);
+      try {
+        if(state.sendMethod === 'Email'){
+          window.location.href = emLink; 
+        } else if(state.sendMethod === 'WhatsApp'){
+          var a2 = document.createElement('a');
+          a2.href = waLink; a2.target = '_blank'; a2.rel = 'noopener';
+          document.body.appendChild(a2); a2.click(); a2.remove();
+        } else {
+          window.location.href = vbLink;
+        }
+      } catch(navErr){}
 
     } catch(err){
       console.error('Booking submit error', err);
