@@ -1065,8 +1065,10 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     var d = (dropoffTxt || '').toLowerCase();
     var combo = p + ' ' + d;
     var isToOrFromNaia = isNaia(p) || isNaia(d);
-    var mult = v.tier === 'Sedan' ? 1 : 1.2;
     var lines = [];
+
+    // All standard consumer vehicles (Sedans, 6-Seaters, SUVs) fall under Class 1.
+    var mult = 1; 
 
     if(routePref === 'budget'){
       lines.push({ label: 'Toll: National Highway Bypass (Toll-Free)', val: 0, zeroToll: true });
@@ -1079,40 +1081,68 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
     } else if(combo.indexOf('cabuyao') >= 0){
       slexToll = 91; slexName = 'SLEX (Cabuyao ↔ Alabang)';
     } else if(combo.indexOf('santa rosa') >= 0 || combo.indexOf('sta rosa') >= 0 || combo.indexOf('sta. rosa') >= 0){
-      slexToll = 76; slexName = 'SLEX (Sta. Rosa ↔ Alabang)';
-    } else if(combo.indexOf('biñan') >= 0 || combo.indexOf('binan') >= 0){
-      slexToll = 59; slexName = 'SLEX (Biñan ↔ Alabang)';
+      slexToll = 68; slexName = 'SLEX (Sta. Rosa ↔ Alabang)';
+    } else if(combo.indexOf('biñan') >= 0 || combo.indexOf('binan') >= 0 || combo.indexOf('carmona') >= 0 || combo.indexOf('mamplasan') >= 0){
+      slexToll = 59; slexName = 'SLEX (Mamplasan/Carmona ↔ Alabang)';
     } else if(combo.indexOf('san pedro') >= 0){
       slexToll = 26; slexName = 'SLEX (San Pedro ↔ Alabang)';
     } else if(combo.indexOf('lipa') >= 0 || combo.indexOf('tanauan') >= 0 || combo.indexOf('batangas') >= 0){
       slexToll = 210; slexName = 'STAR Tollway & SLEX (Batangas ↔ Alabang)';
     }
 
-    var isLagunaCorridor = /calamba|santa rosa|sta rosa|sta\. rosa|biñan|binan|cabuyao|san pedro|los baños|los banos|san pablo|lipa|tanauan|batangas/i.test(combo);
+    var isLagunaCorridor = /calamba|santa rosa|sta rosa|sta\. rosa|biñan|binan|carmona|mamplasan|cabuyao|san pedro|los baños|los banos|san pablo|lipa|tanauan|batangas/i.test(combo);
 
-    if(isLagunaCorridor){
-      lines.push({ label: 'Toll: ' + slexName, val: Math.round(slexToll * mult) });
+    if(combo.indexOf('daang hari') >= 0 || combo.indexOf('mcx') >= 0){
+      // Muntinlupa-Cavite Expressway (MCX) + SLEX connecting segment
+      lines.push({ label: 'Toll: MCX (Muntinlupa-Cavite Expressway)', val: 23 * mult });
+      lines.push({ label: 'Toll: SLEX Connecting Segment', val: 26 * mult });
       if(routePref === 'fastest'){
-        lines.push({ label: 'Toll: Skyway Stages 1/2 Elevated (Alabang ↔ Magallanes)', val: Math.round(164 * mult) });
+        lines.push({ label: 'Toll: Skyway Stages 1/2 Elevated', val: 164 * mult });
         if(isToOrFromNaia){
-          lines.push({ label: 'Toll: NAIAX Elevated (Direct Terminal Ramp)', val: Math.round(45 * mult) });
+          lines.push({ label: 'Toll: NAIAX Elevated (Direct Terminal Ramp)', val: 45 * mult });
         }
       }
+    } else if(isLagunaCorridor){
+      lines.push({ label: 'Toll: ' + slexName, val: slexToll * mult });
+      if(routePref === 'fastest'){
+        lines.push({ label: 'Toll: Skyway Stages 1/2 Elevated (Buendia ↔ Alabang)', val: 164 * mult });
+        if(isToOrFromNaia){
+          lines.push({ label: 'Toll: NAIAX Elevated (Direct Terminal Ramp)', val: 45 * mult });
+        }
+      } else {
+        lines.push({ label: 'Toll: SLEX At-Grade (Alabang ↔ Magallanes)', val: 86 * mult });
+      }
     } else if(/general trias|gentri|imus|bacoor|kawit|tanza|noveleta|rosario/i.test(combo)){
-      lines.push({ label: 'Toll: CAVITEX Expressway', val: Math.round(73 * mult) });
+      lines.push({ label: 'Toll: CAVITEX (Parañaque + Kawit Plazas)', val: 127 * mult });
       if(isToOrFromNaia && routePref === 'fastest'){
-        lines.push({ label: 'Toll: NAIAX Elevated Direct Ramp', val: Math.round(45 * mult) });
+        lines.push({ label: 'Toll: NAIAX Elevated Direct Ramp', val: 45 * mult });
       }
     } else if(combo.indexOf('clark') >= 0){
-      lines.push({ label: 'Toll: NLEX / SCTEX Expressway', val: Math.round(350 * mult) });
-    } else if(combo.indexOf('tagaytay') >= 0){
-      lines.push({ label: 'Toll: CALAX / SLEX Extension', val: Math.round(120 * mult) });
+      if(routePref === 'fastest'){
+        lines.push({ label: 'Toll: Skyway Stage 3 (Buendia ↔ Balintawak)', val: 264 * mult });
+      }
+      lines.push({ label: 'Toll: NLEX / SCTEX Expressway (Balintawak ↔ Clark)', val: 479 * mult });
+    } else if(combo.indexOf('tagaytay') >= 0 || combo.indexOf('silang') >= 0){
+      lines.push({ label: 'Toll: CALAX (Cavite-Laguna Expressway)', val: 81 * mult });
+      lines.push({ label: 'Toll: SLEX to Alabang', val: 59 * mult });
+      if(routePref === 'fastest'){
+        lines.push({ label: 'Toll: Skyway Stages 1/2 Elevated', val: 164 * mult });
+        if(isToOrFromNaia){
+          lines.push({ label: 'Toll: NAIAX Elevated', val: 45 * mult });
+        }
+      }
     } else {
-      lines.push({ label: 'Toll: Expressway Base', val: Math.round(95 * mult) });
+      if(routePref === 'fastest') {
+        lines.push({ label: 'Toll: Skyway / Elevated Base', val: 264 * mult });
+      } else {
+        lines.push({ label: 'Toll: Expressway Base', val: 86 * mult });
+      }
     }
 
-    if(routePref === 'fastest' && /quezon city| qc|marikina|cubao|caloocan|valenzuela/i.test(combo)){
-      lines.push({ label: 'Toll: Skyway Stage 3 Elevated (Buendia ↔ Balintawak)', val: Math.round(264 * mult) });
+    if(routePref === 'fastest' && /quezon city| qc|marikina|cubao|caloocan|valenzuela/i.test(combo) && combo.indexOf('clark') === -1){
+      if(!lines.some(function(l){ return l.label.indexOf('Stage 3') !== -1; })){
+        lines.push({ label: 'Toll: Skyway Stage 3 Elevated (Buendia ↔ Balintawak)', val: 264 * mult });
+      }
     }
 
     var sum = lines.reduce(function(acc, cur){ return acc + cur.val; }, 0);
