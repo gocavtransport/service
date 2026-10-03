@@ -1627,8 +1627,7 @@ input[type="checkbox"]{width:auto;min-height:0;margin-right:10px;transform:scale
           doc.text('Service: '+b.service, 40, y); y+=15;
           doc.text('Vehicle: '+b.vehicle, 40, y); y+=15;
           doc.text('Route: ' + b.route, 40, y); y+=15;
-          if(b.partnerLine){ var pl = doc.splitTextToSize(b.partnerLine, W-80); doc.text(pl, 40, y); y += pl.length*15; }
-
+          
           if(b.isSplit){
             doc.text('Trip 1 Departure: '+b.depDate+' @ '+b.depTime+' ('+b.from+' → '+b.to+')', 40, y); y+=15;
             doc.text('Trip 2 Return: '+b.returnDate+' @ '+b.returnTime+' ('+b.to+' → '+b.from+')', 40, y); y+=15;
