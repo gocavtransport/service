@@ -1,0 +1,6 @@
+{
+  "name": "GoCav Transport — Chauffeur Service",
+  "description": "Professional chauffeur and transport service from Cavite, NCR, Laguna & Batangas across Luzon. Instant fare calculator, live dispatch, and Android PWA installable.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

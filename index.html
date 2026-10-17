@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <script>
+      // Suppress benign Vite HMR websocket connection notices when HMR is disabled
+      (function() {
+        var _err = console.error;
+        console.error = function() {
+          if (arguments.length > 0 && typeof arguments[0] === 'string' && (arguments[0].indexOf('[vite]') !== -1 || arguments[0].indexOf('websocket') !== -1)) {
+            return;
+          }
+          _err.apply(console, arguments);
+        };
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>GoCav Transport — Premium Chauffeur Service | Cavite · NCR · Luzon</title>
+    <meta name="description" content="Professional chauffeur and transport service from Cavite, NCR, Laguna & Batangas across Luzon. Instant fare calculator, live dispatch, and Android PWA installable." />
+    
+    <!-- PWA & Mobile Web App Meta -->
+    <meta name="theme-color" content="#0e0f14" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="GoCav" />
+    <meta name="application-name" content="GoCav Transport" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <script>
+      window.__gocav_prompt_listeners = [];
+      window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        window.__gocav_deferred_prompt = e;
+        if (window.__gocav_prompt_listeners) {
+          window.__gocav_prompt_listeners.forEach(function(fn) { try { fn(e); } catch(err) {} });
+        }
+      });
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(function(reg) {
+              console.log('GoCav PWA ready');
+            })
+            .catch(function(err) {
+              console.warn('GoCav SW registration:', err);
+            });
+        });
+      }
+    </script>
+
+    <!-- OpenGraph & Social Sharing -->
+    <meta property="og:title" content="GoCav Transport — Premium Chauffeur Service | Cavite · NCR · Luzon" />
+    <meta property="og:description" content="Professional chauffeur and transport service from Cavite, NCR, Laguna & Batangas across Luzon. Instant fare calculator, live dispatch, and Android PWA installable." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://i.imgur.com/DWfEGWv.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="GoCav Transport — Premium Chauffeur Service" />
+    <meta name="twitter:description" content="Live fare calculator, private transfers, and chauffeur rentals across Cavite, NCR and Luzon." />
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Preconnect to image hosts & fonts -->
+    <link rel="preconnect" href="https://i.imgur.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-[#0b0c10] text-[#e6e8f0] antialiased selection:bg-[#d4af37]/30 selection:text-[#fdf4b8]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

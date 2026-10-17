@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --gold: #d4af37;
+    --gold-light: #f5d77f;
+    --gold-dark: #9a7b1c;
+    --gold-soft: rgba(212, 175, 55, 0.12);
+    --gold-glow: rgba(212, 175, 55, 0.35);
+    --bg-dark: #0b0c10;
+    --card-bg: #12141c;
+    --card-bg2: #181a24;
+    --border-color: #242736;
+    --font-heading: 'Cinzel', serif;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-dark);
+    color: #f3f4f8;
+    overflow-x: hidden;
+    line-height: 1.65;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* High legibility form fields and inputs */
+  input, select, textarea {
+    font-size: 1rem !important;
+    letter-spacing: 0.01em;
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: #94a3b8 !important;
+    opacity: 0.9;
+  }
+}
+
+.font-serif-luxury {
+  font-family: 'Cinzel', serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0c10;
+}
+::-webkit-scrollbar-thumb {
+  background: #282c3c;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+
+/* Animations */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.25), inset 0 0 8px rgba(212, 175, 55, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.5), inset 0 0 15px rgba(212, 175, 55, 0.25);
+  }
+}
+
+.neon-pulse {
+  animation: neonPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.subtle-float {
+  animation: subtleFloat 3s infinite ease-in-out;
+}
+
+/* Safe areas for mobile devices */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 16px);
+}
+
+/* Printable Receipt & Document Media Query */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Hide all topbars, footers, sidebars during print */
+  nav, footer, header, #root > *:not(main) {
+    display: none !important;
+  }
+
+  /* Ensure the receipt is displayed crisp and clean */
+  #gocav-printable-receipt {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    color: #111827 !important;
+    background: #ffffff !important;
+  }
+}
